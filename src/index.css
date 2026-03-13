@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  --color-krb-purple: #0e4c78;
+  --color-krb-blue: #1b9ce5;
+  --color-krb-yellow: #59b947;
+  --color-krb-dark: #07273f;
+  --color-krb-light: #ffffff;
+  --color-krb-accent: #2f7ab3;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-slate-800 antialiased bg-white selection:bg-krb-blue/20 selection:text-krb-purple;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    overflow-x: hidden;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  section {
+    @apply py-12 sm:py-16 lg:py-24 overflow-hidden;
+  }
+}
+
+@layer components {
+  .font-google-sans {
+    font-family: "Google Sans", "Product Sans", "Inter", "Segoe UI", sans-serif;
+  }
+
+  .btn-primary {
+    @apply min-h-11 bg-krb-yellow text-white px-6 sm:px-10 py-3.5 sm:py-4 rounded-xl font-bold text-sm uppercase tracking-widest hover:bg-krb-blue hover:text-white transition-all duration-300 shadow-lg shadow-krb-yellow/20 flex items-center justify-center gap-3 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply min-h-11 bg-white text-krb-purple border border-krb-blue/30 px-6 sm:px-10 py-3.5 sm:py-4 rounded-xl font-bold text-sm uppercase tracking-widest hover:border-krb-blue hover:bg-krb-blue/5 transition-all duration-300 flex items-center justify-center gap-3 active:scale-95;
+  }
+
+  .card-modern {
+    @apply bg-white rounded-2xl p-8 border border-krb-blue/10 shadow-sm hover:shadow-xl hover:shadow-krb-blue/15 transition-all duration-500;
+  }
+
+  .section-title {
+    @apply text-3xl lg:text-5xl font-bold text-krb-purple mb-6 leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-krb-blue font-bold text-[11px] uppercase tracking-[0.3em] mb-4 block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.krb-gradient {
+  background: linear-gradient(135deg, #3d1d4d 0%, #0f0a14 100%);
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-krb-purple to-krb-blue;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .card-modern {
+    padding: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms, transform 400ms;
+}
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 400ms, transform 400ms;
+}

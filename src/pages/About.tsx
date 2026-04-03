@@ -20,6 +20,8 @@ const About = () => {
             src="/fencing-.jfif" 
             alt="Background" 
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">

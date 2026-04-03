@@ -56,6 +56,8 @@ const Quote = () => {
             src="/quote.jpg" 
             alt="Background" 
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-krb-dark via-krb-dark/80 to-krb-dark"></div>
         </div>

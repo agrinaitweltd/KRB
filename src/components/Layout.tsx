@@ -50,8 +50,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isCleaningOpen, setIsCleaningOpen] = useState(false);
   const [isMobileCleaningOpen, setIsMobileCleaningOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
   const location = useLocation();
+
+  const allServices = [
+    { name: 'Fencing Installation', path: '/services/fencing' },
+    { name: 'Painting & Decorating', path: '/services/painting' },
+    { name: 'Mirror Installation', path: '/services/mounting' },
+    { name: 'TV Mounting', path: '/services/mounting' },
+    { name: 'General Handyman Services', path: '/services/handyman' },
+    { name: 'Property Maintenance', path: '/services/maintenance' },
+    { name: 'Carpet Cleaning', path: '/services/carpet-cleaning' },
+    { name: 'Domestic Cleaning', path: '/services/domestic-cleaning' },
+    { name: 'Industrial Cleaning', path: '/services/industrial-cleaning' },
+    { name: 'Office Cleaning', path: '/services/office-cleaning' },
+    { name: 'Patio Cleaning', path: '/services/patio-cleaning' },
+    { name: 'Driveway Cleaning', path: '/services/driveway-cleaning' },
+    { name: 'General Repairs', path: '/services/repairs' },
+    { name: 'Security Services', path: '/services/security-services' },
+  ];
+
+  const filteredServices = searchQuery.trim()
+    ? allServices.filter((s) => s.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    : allServices;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -64,6 +88,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsMobileServicesOpen(false);
     setIsCleaningOpen(false);
     setIsMobileCleaningOpen(false);
+    setIsSearchOpen(false);
+    setSearchQuery('');
   }, [location.pathname]);
 
   useEffect(() => {
@@ -75,7 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isMenuOpen) {
+    if (isMenuOpen || isSearchOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -84,7 +110,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isSearchOpen]);
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
 
   const navLinks: NavItem[] = [
     { name: 'Home', path: '/' },
@@ -96,6 +128,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       { name: 'TV Mounting', path: '/services/mounting' },
       { name: 'General Handyman Services', path: '/services/handyman' },
       { name: 'Property Maintenance', path: '/services/maintenance' },
+      { name: 'Security Services', path: '/services/security-services' },
       {
         name: 'Cleaning',
         children: [
@@ -133,7 +166,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Header */}
       <header
-        className="w-full z-[150] sticky top-0 bg-slate-100 border-b border-slate-200 font-google-sans"
+        className="w-full z-[150] fixed top-0 left-0 bg-slate-100 border-b border-slate-200 font-google-sans"
         style={{
           ['--color-krb-purple' as string]: '#3d1d4d',
           ['--color-krb-blue' as string]: '#0088cc',
@@ -183,7 +216,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </Link>
               </div>
               <div className="flex items-center gap-3 px-2.5">
-                <a href="tel:02012345678" className="hover:text-krb-blue transition-colors">020 1234 5678</a>
+                <a href="tel:03335772280" className="hover:text-krb-blue transition-colors">0333 577 2280</a>
+                <span className="text-slate-300">|</span>
+                <a href="tel:+447746343913" className="hover:text-krb-blue transition-colors">+44 7746 343913</a>
                 <span className="text-slate-300">|</span>
                 <a href="mailto:info@krbfm.co.uk" className="hover:text-krb-blue transition-colors">info@krbfm.co.uk</a>
               </div>
@@ -370,7 +405,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <button
                 type="button"
                 className="w-11 h-11 flex items-center justify-center rounded-xl text-krb-purple bg-white transition-all duration-300 active:scale-95"
-                aria-label="Search"
+                aria-label="Search services"
+                onClick={() => { setIsSearchOpen(true); setIsMenuOpen(false); }}
               >
                 <Search size={22} />
               </button>
@@ -386,6 +422,68 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </motion.div>
 
+        {/* Mobile Search Overlay */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[250] bg-[#003a70] lg:hidden flex flex-col"
+            >
+              <div className="flex items-center gap-3 px-4 py-4 border-b border-white/15">
+                <Search size={20} className="text-white/60 shrink-0" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search services..."
+                  className="flex-1 bg-transparent text-white text-lg placeholder-white/40 outline-none font-medium"
+                />
+                <button
+                  type="button"
+                  onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                  className="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+                  aria-label="Close search"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-3">
+                {filteredServices.length > 0 ? (
+                  <div className="space-y-1">
+                    {filteredServices.map((service, i) => (
+                      <motion.div
+                        key={service.path + service.name}
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.03, duration: 0.2 }}
+                      >
+                        <Link
+                          to={service.path}
+                          onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                          className="flex items-center justify-between px-4 py-4 rounded-xl text-white hover:bg-white/10 transition-colors group"
+                        >
+                          <span className="text-[15px] font-medium">{service.name}</span>
+                          <ArrowRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <Search size={40} className="text-white/20 mx-auto mb-4" />
+                    <p className="text-white/50 text-sm font-medium">No services found for "{searchQuery}"</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Mobile Nav */}
         <AnimatePresence>
           {isMenuOpen && (
@@ -394,30 +492,28 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="fixed inset-x-0 top-[74px] bottom-0 z-[200] bg-[#5a1f70] lg:hidden overflow-y-auto"
+              className="fixed inset-x-0 top-[74px] bottom-0 z-[200] bg-[#003a70] lg:hidden overflow-y-auto"
             >
-              <div className="border-t border-black/25">
+              <div>
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.path}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.03 * i }}
-                    className="border-b border-black/25"
+                    className="border-b border-white/15"
                   >
                     {link.dropdown ? (
                       <>
                         <button
                           type="button"
                           onClick={() => setIsMobileServicesOpen((open) => !open)}
-                          className="w-full flex items-stretch text-white uppercase"
+                          className="w-full flex items-center justify-between text-white uppercase px-5 py-5"
                         >
-                          <span className="flex-1 px-6 py-5 text-[18px] font-bold tracking-wide text-left">
+                          <span className="text-[15px] font-semibold tracking-[0.12em]">
                             {link.name}
                           </span>
-                          <span className="w-16 border-l border-black/25 flex items-center justify-center">
-                            <ChevronRight size={24} className={`transition-transform ${isMobileServicesOpen ? 'rotate-90' : ''}`} />
-                          </span>
+                          <ChevronRight size={20} className={`text-white/70 transition-transform ${isMobileServicesOpen ? 'rotate-90' : ''}`} />
                         </button>
 
                         <AnimatePresence>
@@ -426,22 +522,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden bg-[#4f1a64] border-t border-black/25"
+                              className="overflow-hidden bg-[#002a55]"
                             >
                               {link.dropdown.map((sub) => (
                                 sub.children ? (
-                                  <div key={sub.name} className="border-b border-black/20">
+                                  <div key={sub.name} className="border-t border-white/10">
                                     <button
                                       type="button"
-                                      className="w-full flex items-stretch text-white uppercase"
+                                      className="w-full flex items-center justify-between text-white uppercase px-7 py-4"
                                       onClick={() => setIsMobileCleaningOpen((open) => !open)}
                                     >
-                                      <span className="flex-1 px-8 py-4 text-[15px] font-semibold tracking-wide text-left">
+                                      <span className="text-[13px] font-semibold tracking-[0.1em]">
                                         {sub.name}
                                       </span>
-                                      <span className="w-14 border-l border-black/20 flex items-center justify-center">
-                                        <ChevronRight size={20} className={`transition-transform ${isMobileCleaningOpen ? 'rotate-90' : ''}`} />
-                                      </span>
+                                      <ChevronRight size={18} className={`text-white/60 transition-transform ${isMobileCleaningOpen ? 'rotate-90' : ''}`} />
                                     </button>
 
                                     <AnimatePresence>
@@ -450,13 +544,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                           initial={{ opacity: 0, height: 0 }}
                                           animate={{ opacity: 1, height: 'auto' }}
                                           exit={{ opacity: 0, height: 0 }}
-                                          className="overflow-hidden bg-[#46145a]"
+                                          className="overflow-hidden bg-[#001f42]"
                                         >
                                           {sub.children.map((child) => (
                                             <Link
                                               key={child.name}
                                               to={child.path}
-                                              className="block px-10 py-3 text-white/95 text-[14px] font-medium border-t border-black/15"
+                                              className="block px-9 py-3.5 text-white/90 text-[13px] font-medium border-t border-white/8"
                                               onClick={() => setIsMenuOpen(false)}
                                             >
                                               {child.name}
@@ -470,7 +564,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                   <Link
                                     key={sub.name}
                                     to={sub.path || '/services'}
-                                    className="block px-8 py-4 text-white text-[15px] font-semibold uppercase tracking-wide border-b border-black/20"
+                                    className="block px-7 py-4 text-white text-[13px] font-semibold uppercase tracking-[0.1em] border-t border-white/10"
                                     onClick={() => setIsMenuOpen(false)}
                                   >
                                     {sub.name}
@@ -484,7 +578,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     ) : (
                       <Link
                         to={link.path}
-                        className="block px-6 py-5 text-white text-[18px] font-bold uppercase tracking-wide"
+                        className="block px-5 py-5 text-white text-[15px] font-semibold uppercase tracking-[0.12em]"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {link.name}
@@ -492,17 +586,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     )}
                   </motion.div>
                 ))}
-
-                <div className="p-5 border-t border-black/25 bg-[#4f1a64]">
-                  <Link
-                    to="/quote"
-                    className="bg-krb-blue text-white w-full py-3.5 rounded-xl font-bold text-center shadow-lg flex items-center justify-center gap-2 text-sm uppercase tracking-wide"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Get a Free Quote
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
               </div>
             </motion.div>
           )}
@@ -510,7 +593,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow">
+      <main className="flex-grow pt-[74px] lg:pt-[142px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -543,6 +626,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     src={MAIN_LOGO_SRC}
                     alt={MAIN_LOGO_ALT}
                     className="w-full h-auto object-contain"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </Link>
@@ -579,7 +664,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone size={16} className="text-krb-blue shrink-0" />
-                  <span>020 1234 5678</span>
+                  <span>0333 577 2280 / +44 7746 343913</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail size={16} className="text-krb-blue shrink-0" />

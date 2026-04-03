@@ -19,6 +19,8 @@ const Contact = () => {
             src="/contact.jfif" 
             alt="Background" 
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -56,7 +58,7 @@ const Contact = () => {
 
               <div className="space-y-8">
                 {[
-                  { icon: Phone, title: 'Call Us', value: '020 1234 5678', sub: 'Mon - Sat: 8am - 6pm' },
+                  { icon: Phone, title: 'Call Us', value: '0333 577 2280 / +44 7746 343913', sub: 'Mon - Sat: 8am - 6pm' },
                   { icon: Mail, title: 'Email Us', value: 'info@krbfm.co.uk', sub: 'Reply within 24 hours', href: 'mailto:info@krbfm.co.uk' },
                   { icon: Globe, title: 'Website', value: 'krbfm.co.uk', sub: 'Visit us online', href: 'https://krbfm.co.uk' },
                   { icon: MapPin, title: 'Service Areas', value: 'Croydon, Purley, Thornton Heath, Coulsdon & South London', sub: 'Local Experts' }
@@ -152,7 +154,7 @@ const Contact = () => {
                       <input 
                         type="tel" 
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                        placeholder="020 1234 5678" 
+                        placeholder="0333 577 2280" 
                       />
                     </div>
                     <div className="space-y-2">

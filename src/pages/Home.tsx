@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
@@ -18,10 +18,37 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
+const heroSlides = [
+  {
+    title: <>Trusted Facilities<br />support for homes<br />and businesses</>,
+    description: 'From planned maintenance to responsive cleaning and repairs, KRB helps properties run smoothly with dependable, high-quality service delivery.',
+  },
+  {
+    title: <>Professional Fencing<br />& Property<br />Maintenance</>,
+    description: 'Quality fencing installation and ongoing property upkeep to protect and enhance your home or business premises.',
+  },
+  {
+    title: <>Expert Painting,<br />Decorating &<br />Repairs</>,
+    description: 'Transform your space with our skilled painters and reliable repair services — delivering clean finishes every time.',
+  },
+  {
+    title: <>Your Local<br />Handyman &<br />Cleaning Team</>,
+    description: 'From odd jobs to deep cleans, our friendly team is here to keep your property looking its best all year round.',
+  },
+];
+
 const Home = () => {
   const [comparisonPosition, setComparisonPosition] = useState(50);
   const [isDraggingComparison, setIsDraggingComparison] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
   const comparisonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroSlide((s) => (s + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlide]);
 
   const updateComparisonPosition = (clientX: number) => {
     if (!comparisonRef.current) {
@@ -143,7 +170,7 @@ const Home = () => {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="max-w-[1520px] mx-auto px-2 sm:px-3 lg:px-6"
         >
-          <div className="grid lg:grid-cols-[1.65fr_1fr] overflow-hidden min-h-[520px] lg:min-h-[620px]">
+          <div className="grid lg:grid-cols-[1.65fr_1fr] overflow-hidden min-h-[360px] sm:min-h-[520px] lg:min-h-[620px]">
             <div
               ref={comparisonRef}
               className="relative select-none touch-pan-y"
@@ -161,6 +188,8 @@ const Home = () => {
                 alt="Kitchen before renovation"
                 className="w-full h-full object-cover"
                 draggable={false}
+                fetchPriority="high"
+                decoding="async"
               />
 
               <div
@@ -173,6 +202,8 @@ const Home = () => {
                   alt="Kitchen after renovation"
                   className="w-full h-full object-cover"
                   draggable={false}
+                  fetchPriority="high"
+                  decoding="async"
                 />
               </div>
 
@@ -232,15 +263,11 @@ const Home = () => {
 
               <div className="relative z-10">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light leading-tight tracking-tight mb-7">
-                  Trusted Facilities
-                  <br />
-                  support for homes
-                  <br />
-                  and businesses
+                  {heroSlides[heroSlide].title}
                 </h1>
 
                 <p className="text-lg lg:text-2xl leading-relaxed text-white/95 max-w-xl">
-                  From planned maintenance to responsive cleaning and repairs, KRB helps properties run smoothly with dependable, high-quality service delivery.
+                  {heroSlides[heroSlide].description}
                 </p>
               </div>
 
@@ -254,17 +281,30 @@ const Home = () => {
                 </Link>
 
                 <div className="mt-7 flex items-center gap-4 text-white/90">
-                  <button className="text-xs font-black uppercase tracking-[0.14em]">|| Pause</button>
-                  <button className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center hover:border-white transition-colors" aria-label="Previous slide">
+                  <button
+                    className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border border-white/40 flex items-center justify-center hover:border-white transition-colors"
+                    aria-label="Previous slide"
+                    onClick={() => setHeroSlide((s) => (s - 1 + heroSlides.length) % heroSlides.length)}
+                  >
                     <ChevronRight size={14} className="rotate-180" />
                   </button>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-white" />
-                    <span className="w-2.5 h-2.5 rounded-full border border-white/80" />
-                    <span className="w-2.5 h-2.5 rounded-full border border-white/80" />
-                    <span className="w-2.5 h-2.5 rounded-full border border-white/80" />
+                  <div className="flex items-center gap-3">
+                    {heroSlides.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setHeroSlide(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          i === heroSlide ? 'bg-white scale-110' : 'border border-white/80 hover:bg-white/40'
+                        }`}
+                      />
+                    ))}
                   </div>
-                  <button className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center hover:border-white transition-colors" aria-label="Next slide">
+                  <button
+                    className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border border-white/40 flex items-center justify-center hover:border-white transition-colors"
+                    aria-label="Next slide"
+                    onClick={() => setHeroSlide((s) => (s + 1) % heroSlides.length)}
+                  >
                     <ChevronRight size={14} />
                   </button>
                 </div>
@@ -354,6 +394,8 @@ const Home = () => {
                   src="/whykrb.jfif" 
                   alt="Quality Work" 
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="absolute -bottom-8 -right-8 z-20 bg-krb-purple p-8 rounded-2xl shadow-xl text-white hidden sm:block">

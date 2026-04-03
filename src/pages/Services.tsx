@@ -11,7 +11,8 @@ import {
   Clock,
   CheckCircle2,
   ThumbsUp,
-  Wrench
+  Wrench,
+  ShieldCheck
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -32,7 +33,7 @@ const Services = () => {
       title: 'Painting & Decorating',
       description: 'High-quality interior and exterior painting services to transform your home. We provide expert color consultation and meticulous preparation.',
       icon: Paintbrush,
-      image: '/kitchen-renovation.png',
+      image: '/pandd.jpg',
       color: 'bg-purple-50 text-purple-600'
     },
     {
@@ -66,6 +67,14 @@ const Services = () => {
       icon: Wrench,
       image: '/flooring-install.png',
       color: 'bg-indigo-50 text-indigo-600'
+    },
+    {
+      id: 'security-services',
+      title: 'Security Services',
+      description: 'Professional security services across London, providing static security guards and tailored protection for retail, hospitality, offices, events, and construction sites.',
+      icon: ShieldCheck,
+      image: '/security.jpg',
+      color: 'bg-slate-50 text-slate-600'
     }
   ];
 
@@ -82,9 +91,11 @@ const Services = () => {
       <section className="bg-krb-dark py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <img 
-            src="/fencing-wie.png" 
+            src="/piol.jpg" 
             alt="Background" 
             className="w-fullSSS h-full object-cover"
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = SERVICE_IMAGE_FALLBACK;
@@ -124,12 +135,14 @@ const Services = () => {
                 className="group"
               >
                 <div className="card-modern h-full flex flex-col p-0 overflow-hidden">
-                  <div className="h-64 sm:h-72 overflow-hidden relative bg-slate-100">
+                  <div className="h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden relative bg-slate-100">
                     <img 
                       src={service.image} 
                       alt={service.title} 
                       className="w-full h-full object-contain bg-slate-100 p-2 sm:p-3 group-hover:scale-[1.02] transition-transform duration-500"
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = SERVICE_IMAGE_FALLBACK;

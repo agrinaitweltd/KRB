@@ -14,7 +14,8 @@ import {
   Paintbrush,
   Tv,
   Hammer,
-  Home as HomeIcon
+  Home as HomeIcon,
+  ShieldCheck
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -41,7 +42,7 @@ const serviceData: Record<string, any> = {
   },
   'painting': {
     title: 'Painting & Decorating',
-    heroImage: '/kitchen-renovation.png',
+    heroImage: '/pandd.jpg',
     description: 'High-quality interior and exterior painting services to transform your home. We provide meticulous preparation and a flawless finish.',
     benefits: [
       'Professional, smooth finish',
@@ -238,6 +239,27 @@ const serviceData: Record<string, any> = {
       'Driveway Edge & Kerb Cleaning'
     ],
     icon: <HomeIcon size={48} />
+  },
+  'security-services': {
+    title: 'Security Services',
+    heroImage: '/security.jpg',
+    description: 'Professional security services across London, providing reliable static security guards and tailored protection for retail, hospitality, offices, events, and construction sites.',
+    benefits: [
+      'Visible deterrent against theft and antisocial behaviour',
+      'Trained and SIA-licensed security personnel',
+      'Tailored security plans for your premises',
+      '24/7 coverage and flexible shift patterns',
+      'Reliable and professional service across London'
+    ],
+    types: [
+      'Retail & Shopping Mall Security',
+      'Restaurant & Hospitality Security',
+      'Office Building Security',
+      'Event Security',
+      'Construction Site Security',
+      'Static Security Guards across London'
+    ],
+    icon: <ShieldCheck size={48} />
   }
 };
 
@@ -260,6 +282,7 @@ const ServiceDetail = () => {
             alt={service.title} 
             className="w-full h-full object-contain md:object-cover bg-slate-200"
             referrerPolicy="no-referrer"
+            decoding="async"
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = SERVICE_IMAGE_FALLBACK;
@@ -369,11 +392,11 @@ const ServiceDetail = () => {
                     Interested in our {service.title.toLowerCase()} services? Contact us today for a free, no-obligation estimate.
                   </p>
                   <div className="space-y-4 mb-10 relative z-10">
-                    <a href="tel:02012345678" className="flex items-center gap-4 hover:text-krb-yellow transition-colors">
+                    <a href="tel:03335772280" className="flex items-center gap-4 hover:text-krb-yellow transition-colors">
                       <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
                         <Phone size={18} />
                       </div>
-                      <span className="font-bold">020 1234 5678</span>
+                      <span className="font-bold">0333 577 2280</span>
                     </a>
                     <a href="mailto:info@krbfm.co.uk" className="flex items-center gap-4 hover:text-krb-yellow transition-colors">
                       <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">

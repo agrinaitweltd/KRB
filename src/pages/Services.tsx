@@ -15,6 +15,8 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import ImageShowcase from '../components/ImageShowcase';
+import { servicesImageSlots } from '../data/siteImageSlots';
 
 const Services = () => {
   const SERVICE_IMAGE_FALLBACK = '/service-fallback.svg';
@@ -263,6 +265,14 @@ const Services = () => {
           </motion.div>
         </div>
       </section>
+
+      <ImageShowcase
+        eyebrow="Portfolio"
+        title="Add Two Services Page Images"
+        description="These work well for a broader portfolio view and a close-up workmanship shot near your service listings."
+        items={servicesImageSlots}
+        compact
+      />
     </div>
   );
 };

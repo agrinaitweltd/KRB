@@ -18,6 +18,8 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import ImageShowcase from '../components/ImageShowcase';
+import { serviceDetailImageSlots } from '../data/siteImageSlots';
 
 const serviceData: Record<string, any> = {
   'fencing': {
@@ -476,6 +478,14 @@ const ServiceDetail = () => {
           </div>
         </div>
       </section>
+
+      <ImageShowcase
+        eyebrow="Example Work"
+        title="Add One Service Detail Image"
+        description="Use this as a reusable project photo slot that supports whichever service page the visitor is viewing."
+        items={serviceDetailImageSlots}
+        compact
+      />
     </div>
   );
 };

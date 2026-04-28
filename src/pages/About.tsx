@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, Shield, ThumbsUp, Clock, Users, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ImageShowcase from '../components/ImageShowcase';
+import { aboutImageSlots } from '../data/siteImageSlots';
 
 const About = () => {
   const fadeIn = {
@@ -229,6 +231,14 @@ const About = () => {
           </motion.div>
         </div>
       </section>
+
+      <ImageShowcase
+        eyebrow="Team And Projects"
+        title="Add Two About Page Images"
+        description="Use these for team shots, vans, tools, or completed work so the About page feels more personal and credible."
+        items={aboutImageSlots}
+        compact
+      />
     </div>
   );
 };

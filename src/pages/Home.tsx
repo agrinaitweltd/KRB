@@ -17,6 +17,8 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import ImageShowcase from '../components/ImageShowcase';
+import { homeImageSlots } from '../data/siteImageSlots';
 
 const heroSlides = [
   {
@@ -516,6 +518,13 @@ const Home = () => {
           </div>
         </motion.div>
       </section>
+
+      <ImageShowcase
+        eyebrow="More Visual Content"
+        title="Add Three Homepage Images"
+        description="These slots sit on the homepage so you can break up the page with real project photography instead of relying only on the hero and existing feature images."
+        items={homeImageSlots}
+      />
     </div>
   );
 };

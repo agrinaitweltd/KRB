@@ -1,6 +1,8 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Globe, Clock, Send, Shield, ThumbsUp, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import ImageShowcase from '../components/ImageShowcase';
+import { contactImageSlots } from '../data/siteImageSlots';
 
 const Contact = () => {
   const fadeIn = {
@@ -231,6 +233,14 @@ const Contact = () => {
           </motion.div>
         </div>
       </section>
+
+      <ImageShowcase
+        eyebrow="Trust Builders"
+        title="Add Two Contact Page Images"
+        description="Use one friendly team image and one finished-work image here to support enquiries and make the page feel less form-heavy."
+        items={contactImageSlots}
+        compact
+      />
     </div>
   );
 };

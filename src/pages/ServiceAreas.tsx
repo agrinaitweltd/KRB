@@ -2,6 +2,8 @@ import React from 'react';
 import { MapPin, CheckCircle2, ArrowRight, Shield, Clock, ThumbsUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import ImageShowcase from '../components/ImageShowcase';
+import { serviceAreasImageSlots } from '../data/siteImageSlots';
 
 const ServiceAreas = () => {
   const areas = [
@@ -170,6 +172,14 @@ const ServiceAreas = () => {
           </motion.div>
         </div>
       </section>
+
+      <ImageShowcase
+        eyebrow="Local Projects"
+        title="Add One Service Areas Image"
+        description="Use a Croydon or South London property image here to make your coverage area feel grounded and local."
+        items={serviceAreasImageSlots}
+        compact
+      />
     </div>
   );
 };

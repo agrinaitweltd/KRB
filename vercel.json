@@ -1,9 +1,10 @@
-# Vercel configuration for a Vite + React app
-
-# Vercel will detect the build and output settings automatically for Vite, but we can be explicit.
-
-[build]
-command = "npm run build"
-
-[output]
-directory = "dist"
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
+}

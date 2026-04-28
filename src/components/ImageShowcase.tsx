@@ -68,9 +68,8 @@ const ImageShowcase: React.FC<ImageShowcaseProps> = ({
                   {item.label}
                 </p>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Add this file to your public folder:
+                  {item.alt}
                 </p>
-                <p className="mt-2 font-bold text-krb-purple break-all">{item.src.replace('/', '')}</p>
               </div>
             </motion.article>
           ))}

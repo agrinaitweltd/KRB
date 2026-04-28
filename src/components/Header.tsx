@@ -320,7 +320,6 @@ const Header: React.FC = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search..."
                 className="w-64 h-11 rounded-lg border border-slate-200 bg-white pl-4 pr-10 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-krb-purple/30"
               />
               <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-krb-purple" />
@@ -426,7 +425,6 @@ const Header: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search services..."
                 className="flex-1 bg-transparent text-white text-lg placeholder-white/40 outline-none font-medium"
               />
               <button

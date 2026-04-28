@@ -95,7 +95,7 @@ const Services = () => {
           <img 
             src="/piol.jpg" 
             alt="Background" 
-            className="w-fullSSS h-full object-cover"
+            className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
             onError={(e) => {
@@ -268,8 +268,8 @@ const Services = () => {
 
       <ImageShowcase
         eyebrow="Portfolio"
-        title="Add Two Services Page Images"
-        description="These work well for a broader portfolio view and a close-up workmanship shot near your service listings."
+        title="Featured Service Gallery"
+        description="Selected project images from our core services, highlighting clean finishes and reliable workmanship."
         items={servicesImageSlots}
         compact
       />

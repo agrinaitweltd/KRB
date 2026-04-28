@@ -520,9 +520,9 @@ const Home = () => {
       </section>
 
       <ImageShowcase
-        eyebrow="More Visual Content"
-        title="Add Three Homepage Images"
-        description="These slots sit on the homepage so you can break up the page with real project photography instead of relying only on the hero and existing feature images."
+        eyebrow="Recent Projects"
+        title="Work Completed By KRB"
+        description="A quick look at completed jobs that show the quality, finish, and range of work we deliver across Croydon and South London."
         items={homeImageSlots}
       />
     </div>

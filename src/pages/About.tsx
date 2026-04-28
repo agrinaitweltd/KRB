@@ -234,8 +234,8 @@ const About = () => {
 
       <ImageShowcase
         eyebrow="Team And Projects"
-        title="Add Two About Page Images"
-        description="Use these for team shots, vans, tools, or completed work so the About page feels more personal and credible."
+        title="Our Team In Action"
+        description="A glimpse of our team and completed projects, showing the care and standards behind every KRB service."
         items={aboutImageSlots}
         compact
       />

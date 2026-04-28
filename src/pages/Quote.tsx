@@ -115,21 +115,21 @@ const Quote = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Full Name</label>
-                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="John Smith" />
+                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Email Address</label>
-                            <input required type="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="john@example.com" />
+                            <input required type="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Phone Number</label>
-                            <input required type="tel" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="07700 900000" />
+                            <input required type="tel" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Postcode</label>
-                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="CR0 1AA" />
+                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                         </div>
                         <motion.button 
@@ -195,12 +195,12 @@ const Quote = () => {
                         </div>
                         <div className="space-y-2">
                           <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Service Address</label>
-                          <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="House number and street" />
+                          <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Town / City</label>
-                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" placeholder="Croydon" />
+                            <input required type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Property Type</label>
@@ -216,7 +216,7 @@ const Quote = () => {
                         </div>
                         <div className="space-y-2">
                           <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Work Description</label>
-                          <textarea required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-40 sm:h-48 resize-none" placeholder="Tell us what work is needed, access details, and anything we should prepare for."></textarea>
+                          <textarea required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-40 sm:h-48 resize-none"></textarea>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-4">
                           <button 

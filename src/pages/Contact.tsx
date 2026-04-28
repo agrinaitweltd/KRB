@@ -138,7 +138,6 @@ const Contact = () => {
                       <input 
                         type="text" 
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                        placeholder="John Doe" 
                       />
                     </div>
                     <div className="space-y-2">
@@ -146,7 +145,6 @@ const Contact = () => {
                       <input 
                         type="email" 
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                        placeholder="john@example.com" 
                       />
                     </div>
                   </div>
@@ -156,7 +154,6 @@ const Contact = () => {
                       <input 
                         type="tel" 
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                        placeholder="0333 577 2280" 
                       />
                     </div>
                     <div className="space-y-2">
@@ -180,7 +177,6 @@ const Contact = () => {
                     <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Your Message</label>
                     <textarea 
                       className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-6 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-40 resize-none" 
-                      placeholder="How can we help you today?"
                     ></textarea>
                   </div>
                   <motion.button 
@@ -236,8 +232,8 @@ const Contact = () => {
 
       <ImageShowcase
         eyebrow="Trust Builders"
-        title="Add Two Contact Page Images"
-        description="Use one friendly team image and one finished-work image here to support enquiries and make the page feel less form-heavy."
+        title="Meet The Team And See The Results"
+        description="A quick look at the people behind KRB and the standard of completed work you can expect."
         items={contactImageSlots}
         compact
       />

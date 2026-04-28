@@ -481,8 +481,8 @@ const ServiceDetail = () => {
 
       <ImageShowcase
         eyebrow="Example Work"
-        title="Add One Service Detail Image"
-        description="Use this as a reusable project photo slot that supports whichever service page the visitor is viewing."
+        title="Service Spotlight"
+        description="A real project example that reflects the level of finish and attention to detail we deliver on site."
         items={serviceDetailImageSlots}
         compact
       />

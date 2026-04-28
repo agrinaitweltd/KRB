@@ -175,8 +175,8 @@ const ServiceAreas = () => {
 
       <ImageShowcase
         eyebrow="Local Projects"
-        title="Add One Service Areas Image"
-        description="Use a Croydon or South London property image here to make your coverage area feel grounded and local."
+        title="Work Across Our Coverage Area"
+        description="Recent projects completed in Croydon and nearby South London locations where our team regularly works."
         items={serviceAreasImageSlots}
         compact
       />

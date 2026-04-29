@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Shield } from 'lucide-react';
 
 const COOKIE_CONSENT_KEY = 'cookie-consent-v2';
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
+
+export const OPEN_COOKIE_SETTINGS_EVENT = 'krb-open-cookie-settings';
 
 const readConsent = (): string | null => {
   try {
@@ -45,44 +46,78 @@ type Preferences = {
   marketing: boolean;
 };
 
+const DEFAULT_PREFERENCES: Preferences = {
+  essential: true,
+  analytics: false,
+  marketing: false,
+};
+
+const parseStoredConsent = (consent: string | null): Preferences | null => {
+  if (!consent) {
+    return null;
+  }
+
+  if (consent === 'accepted') {
+    return { essential: true, analytics: true, marketing: true };
+  }
+
+  if (consent === 'rejected') {
+    return { ...DEFAULT_PREFERENCES };
+  }
+
+  try {
+    const parsed = JSON.parse(consent) as Partial<Preferences>;
+    return {
+      essential: true,
+      analytics: Boolean(parsed.analytics),
+      marketing: Boolean(parsed.marketing),
+    };
+  } catch {
+    return null;
+  }
+};
+
 const CookieBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [hasChecked, setHasChecked] = useState(false);
   const [isManageOpen, setIsManageOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'essential' | 'analytics' | 'marketing'>('essential');
-  const [preferences, setPreferences] = useState<Preferences>({ essential: true, analytics: false, marketing: false });
+  const [hasChecked, setHasChecked] = useState(false);
+  const [preferences, setPreferences] = useState<Preferences>(DEFAULT_PREFERENCES);
 
   useEffect(() => {
-    // Small delay to ensure the banner animates in after page load
+    const onOpenSettings = () => {
+      setIsVisible(true);
+      setIsManageOpen(true);
+    };
+
+    window.addEventListener(OPEN_COOKIE_SETTINGS_EVENT, onOpenSettings);
+
     const timer = setTimeout(() => {
-      const consent = readConsent();
-      if (consent) {
-        // support both legacy string values and stored JSON prefs
-        try {
-          if (consent.startsWith('{')) {
-            const parsed = JSON.parse(consent) as Preferences;
-            setPreferences((prev) => ({ ...prev, ...parsed }));
-          } else if (consent === 'accepted') {
-            setPreferences({ essential: true, analytics: true, marketing: true });
-          } else if (consent === 'rejected') {
-            setPreferences({ essential: true, analytics: false, marketing: false });
-          }
-        } catch {
-          // ignore parse errors
-        }
+      const storedPreferences = parseStoredConsent(readConsent());
+      if (storedPreferences) {
+        setPreferences(storedPreferences);
       } else {
         setIsVisible(true);
       }
       setHasChecked(true);
-    }, 800);
-    return () => clearTimeout(timer);
+    }, 600);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, onOpenSettings);
+    };
   }, []);
 
   useEffect(() => {
     if (!hasChecked) return;
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isVisible) {
-        saveConsent('rejected');
+        if (readConsent()) {
+          setIsVisible(false);
+          setIsManageOpen(false);
+          return;
+        }
+        handleReject();
       }
     };
 
@@ -90,179 +125,187 @@ const CookieBanner = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isVisible, hasChecked]);
 
-  const saveConsent = (value: string) => {
-    persistConsent(value);
+  const closeBanner = () => {
+    setIsManageOpen(false);
     setIsVisible(false);
+  };
+
+  const savePreferences = (next: Preferences) => {
+    setPreferences(next);
+    persistConsent(JSON.stringify(next));
+    closeBanner();
   };
 
   const handleAccept = () => {
-    const prefs: Preferences = { essential: true, analytics: true, marketing: true };
-    setPreferences(prefs);
-    persistConsent(JSON.stringify(prefs));
-    setIsVisible(false);
+    savePreferences({ essential: true, analytics: true, marketing: true });
   };
 
   const handleReject = () => {
-    const prefs: Preferences = { essential: true, analytics: false, marketing: false };
-    setPreferences(prefs);
-    persistConsent(JSON.stringify(prefs));
-    setIsVisible(false);
+    savePreferences({ ...DEFAULT_PREFERENCES });
   };
 
   const handleManage = () => {
-    // Open the detailed settings panel instead of immediately saving
     setIsManageOpen(true);
-    setIsVisible(true);
   };
 
   const handleSaveSettings = () => {
-    persistConsent(JSON.stringify(preferences));
-    setIsManageOpen(false);
-    setIsVisible(false);
+    savePreferences(preferences);
   };
 
   const handleCancelSettings = () => {
+    const storedPreferences = parseStoredConsent(readConsent());
+    setPreferences(storedPreferences ?? DEFAULT_PREFERENCES);
     setIsManageOpen(false);
   };
+
+  if (typeof document === 'undefined') {
+    return null;
+  }
 
   return createPortal(
     <AnimatePresence>
       {isVisible && (
-        <>
-          {/* Backdrop for mobile */}
-          <motion.div
-            key="cookie-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm md:hidden"
-            onClick={handleReject}
-            aria-hidden="true"
-          />
-          <motion.div
-            key="cookie-dialog"
-            initial={{ y: 80, opacity: 0, scale: 0.95 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 80, opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-3 bottom-3 z-[9999] md:inset-x-auto md:right-5 md:bottom-5 md:max-w-md"
-            role="dialog"
-            aria-live="polite"
-            aria-label="Cookie consent"
-            aria-modal="false"
-          >
-            <div className="bg-krb-purple text-white shadow-2xl rounded-2xl p-5 md:p-6 relative border border-white/10">
-              <button
-                type="button"
-                onClick={handleReject}
-                className="absolute top-3 right-3 text-white/60 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10"
-                aria-label="Close cookie banner"
-              >
-                <X size={16} />
-              </button>
-
-              <div className="flex items-start gap-3 pr-6 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <Shield size={18} className="text-white/80" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold mb-1">Cookie preferences</h4>
-                  <p className="text-[13px] leading-relaxed text-white/80">
-                    We use essential cookies to run this website and optional cookies to improve performance. You can accept, reject, or review settings at any time.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2">
-                <button 
-                  type="button"
-                  onClick={handleAccept}
-                  className="bg-white text-krb-purple px-3 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 active:scale-95 transition-all"
-                >
-                  Accept
-                </button>
-                <button 
+        <motion.aside
+          key="cookie-dialog"
+          initial={{ y: 36, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 40, opacity: 0 }}
+          transition={{ duration: 0.28, ease: 'easeOut' }}
+          className="fixed left-2 right-2 bottom-2 z-[9999] sm:left-4 sm:right-4 sm:bottom-4"
+          role="dialog"
+          aria-live="polite"
+          aria-label="Cookie consent"
+          aria-modal="false"
+        >
+          <div className="w-full rounded-[28px] border border-slate-300/90 bg-[#e5e5e5] text-slate-900 shadow-[0_30px_70px_rgba(15,23,42,0.25)] px-4 py-5 sm:px-8 sm:py-7">
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
+              <div className="max-w-3xl">
+                <h4 className="text-3xl sm:text-[2.2rem] leading-tight font-bold mb-3 tracking-[-0.01em]">We value your privacy</h4>
+                <p className="text-base sm:text-[1.05rem] leading-[1.45] text-slate-800 max-w-4xl">
+                  To enhance your browsing experience and provide personalized content, we use cookies. By clicking "Accept," you agree to our use of cookies as outlined in our privacy statement. You can manage your preferences at any time.
+                </p>
+                <button
                   type="button"
                   onClick={handleManage}
-                  className="bg-white/15 text-white px-3 py-3 rounded-xl font-bold text-sm hover:bg-white/25 active:scale-95 transition-all"
+                  className="mt-3 text-[1.1rem] leading-tight font-semibold text-[#2d55ae] underline underline-offset-4 hover:text-[#213f84] transition-colors"
                 >
-                  Settings
-                </button>
-                <button 
-                  type="button"
-                  onClick={handleReject}
-                  className="bg-white/15 text-white px-3 py-3 rounded-xl font-bold text-sm hover:bg-white/25 active:scale-95 transition-all"
-                >
-                  Reject
+                  Privacy, Cookies &amp; GDPR
                 </button>
               </div>
 
-              {/* Manage Panel */}
-              <AnimatePresence>
-                {isManageOpen && (
-                  <motion.div
-                    key="cookie-manage"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.25 }}
-                    className="mt-4 bg-white text-slate-800 rounded-2xl p-4"
-                    role="region"
-                    aria-label="Cookie settings"
-                  >
-                    <div className="flex gap-2 mb-3">
-                      <button className={`flex-1 px-3 py-2 rounded-lg ${activeTab === 'essential' ? 'bg-krb-purple text-white' : 'bg-slate-50'}`} onClick={() => setActiveTab('essential')}>Essential</button>
-                      <button className={`flex-1 px-3 py-2 rounded-lg ${activeTab === 'analytics' ? 'bg-krb-purple text-white' : 'bg-slate-50'}`} onClick={() => setActiveTab('analytics')}>Analytics</button>
-                      <button className={`flex-1 px-3 py-2 rounded-lg ${activeTab === 'marketing' ? 'bg-krb-purple text-white' : 'bg-slate-50'}`} onClick={() => setActiveTab('marketing')}>Marketing</button>
-                    </div>
-
-                    <div className="mb-4">
-                      {activeTab === 'essential' && (
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h5 className="font-bold">Essential cookies</h5>
-                            <p className="text-sm text-slate-500">Required for site operation. Always active.</p>
-                          </div>
-                          <div className="opacity-50">On</div>
-                        </div>
-                      )}
-
-                      {activeTab === 'analytics' && (
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h5 className="font-bold">Analytics cookies</h5>
-                            <p className="text-sm text-slate-500">Help us understand usage to improve the site.</p>
-                          </div>
-                          <label className="inline-flex items-center gap-2">
-                            <input type="checkbox" checked={preferences.analytics} onChange={(e) => setPreferences((p) => ({ ...p, analytics: e.target.checked }))} />
-                          </label>
-                        </div>
-                      )}
-
-                      {activeTab === 'marketing' && (
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h5 className="font-bold">Marketing cookies</h5>
-                            <p className="text-sm text-slate-500">Used for personalised ads and marketing.</p>
-                          </div>
-                          <label className="inline-flex items-center gap-2">
-                            <input type="checkbox" checked={preferences.marketing} onChange={(e) => setPreferences((p) => ({ ...p, marketing: e.target.checked }))} />
-                          </label>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex gap-2">
-                      <button onClick={handleSaveSettings} className="flex-1 bg-krb-purple text-white px-4 py-3 rounded-xl font-bold">Save settings</button>
-                      <button onClick={handleCancelSettings} className="flex-1 bg-slate-50 px-4 py-3 rounded-xl font-bold">Cancel</button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className="w-full md:w-[320px] shrink-0 flex flex-col gap-4">
+                <button
+                  type="button"
+                  onClick={handleAccept}
+                  className="w-full rounded-full bg-krb-purple px-6 py-4 text-white text-lg leading-none font-semibold hover:brightness-110 transition"
+                >
+                  Accept All Cookies
+                </button>
+                <button
+                  type="button"
+                  onClick={handleReject}
+                  className="w-full rounded-full bg-krb-purple px-6 py-4 text-white text-lg leading-none font-semibold hover:brightness-110 transition"
+                >
+                  Reject All Cookies
+                </button>
+                <button
+                  type="button"
+                  onClick={handleManage}
+                  className="w-full rounded-full border border-slate-600 bg-transparent px-6 py-4 text-slate-900 text-lg leading-none font-semibold hover:bg-slate-200 transition"
+                >
+                  Cookie Settings
+                </button>
+              </div>
             </div>
-          </motion.div>
-        </>
+
+            <AnimatePresence>
+              {isManageOpen && (
+                <motion.section
+                  key="cookie-manage"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="mt-6 rounded-2xl border border-slate-300 bg-white p-4 sm:p-5"
+                  aria-label="Cookie settings"
+                >
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-xl border border-slate-200 p-3">
+                      <h5 className="font-semibold text-slate-900">Essential</h5>
+                      <p className="mt-1 text-sm text-slate-600">Always active to run core site features.</p>
+                      <div className="mt-3 inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">Always On</div>
+                    </div>
+
+                    <label className="rounded-xl border border-slate-200 p-3 cursor-pointer">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h5 className="font-semibold text-slate-900">Analytics</h5>
+                          <p className="mt-1 text-sm text-slate-600">Helps us understand site usage and improve experience.</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          className="mt-1 h-5 w-5"
+                          checked={preferences.analytics}
+                          onChange={(event) =>
+                            setPreferences((current) => ({ ...current, analytics: event.target.checked }))
+                          }
+                        />
+                      </div>
+                    </label>
+
+                    <label className="rounded-xl border border-slate-200 p-3 cursor-pointer">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h5 className="font-semibold text-slate-900">Marketing</h5>
+                          <p className="mt-1 text-sm text-slate-600">Used for relevant ads and campaign performance.</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          className="mt-1 h-5 w-5"
+                          checked={preferences.marketing}
+                          onChange={(event) =>
+                            setPreferences((current) => ({ ...current, marketing: event.target.checked }))
+                          }
+                        />
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSaveSettings}
+                      className="rounded-full bg-krb-purple px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition"
+                    >
+                      Save Preferences
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleAccept}
+                      className="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition"
+                    >
+                      Accept All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleReject}
+                      className="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition"
+                    >
+                      Reject All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancelSettings}
+                      className="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.section>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.aside>
       )}
     </AnimatePresence>,
     document.body

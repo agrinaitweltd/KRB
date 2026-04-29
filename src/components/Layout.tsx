@@ -11,7 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import CookieBanner from './CookieBanner';
+import CookieBanner, { OPEN_COOKIE_SETTINGS_EVENT } from './CookieBanner';
 import Header from './Header';
 
 interface LayoutProps {
@@ -28,6 +28,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const openCookieSettings = () => {
+    window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS_EVENT));
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-slate-900 selection:bg-krb-blue/20 selection:text-krb-purple">
@@ -134,8 +138,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs font-medium text-slate-500">
               <Link to="#" className="hover:text-krb-purple transition-colors">Accessibility</Link>
-              <Link to="#" className="hover:text-krb-purple transition-colors">Cookie policy</Link>
-              <Link to="#" className="hover:text-krb-purple transition-colors">Privacy notice</Link>
+              <button type="button" onClick={openCookieSettings} className="hover:text-krb-purple transition-colors">Cookie policy</button>
+              <button type="button" onClick={openCookieSettings} className="hover:text-krb-purple transition-colors">Privacy notice</button>
               <Link to="#" className="hover:text-krb-purple transition-colors">Site terms</Link>
             </div>
           </div>

@@ -171,47 +171,47 @@ const CookieBanner = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 40, opacity: 0 }}
           transition={{ duration: 0.28, ease: 'easeOut' }}
-          className="fixed left-2 right-2 bottom-2 z-[9999] sm:left-4 sm:right-4 sm:bottom-4"
+          className="fixed inset-x-2 bottom-2 z-[9999] sm:inset-x-4 sm:bottom-4 md:inset-x-6"
           role="dialog"
           aria-live="polite"
           aria-label="Cookie consent"
           aria-modal="false"
         >
-          <div className="w-full rounded-[28px] border border-slate-300/90 bg-[#e5e5e5] text-slate-900 shadow-[0_30px_70px_rgba(15,23,42,0.25)] px-4 py-5 sm:px-8 sm:py-7">
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
+          <div className="mx-auto w-full max-w-[1120px] rounded-[24px] border border-slate-300/90 bg-[#e5e5e5] text-slate-900 shadow-[0_20px_50px_rgba(15,23,42,0.22)] px-4 py-4 sm:px-6 sm:py-5">
+            <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-6">
               <div className="max-w-3xl">
-                <h4 className="text-3xl sm:text-[2.2rem] leading-tight font-bold mb-3 tracking-[-0.01em]">We value your privacy</h4>
-                <p className="text-base sm:text-[1.05rem] leading-[1.45] text-slate-800 max-w-4xl">
+                <h4 className="text-[1.65rem] sm:text-[1.9rem] leading-tight font-bold mb-2 tracking-[-0.01em]">We value your privacy</h4>
+                <p className="text-sm sm:text-[0.95rem] leading-[1.45] text-slate-800 max-w-4xl">
                   To enhance your browsing experience and provide personalized content, we use cookies. By clicking "Accept," you agree to our use of cookies as outlined in our privacy statement. You can manage your preferences at any time.
                 </p>
                 <button
                   type="button"
                   onClick={handleManage}
-                  className="mt-3 text-[1.1rem] leading-tight font-semibold text-[#2d55ae] underline underline-offset-4 hover:text-[#213f84] transition-colors"
+                  className="mt-2.5 text-[0.98rem] leading-tight font-semibold text-[#2d55ae] underline underline-offset-4 hover:text-[#213f84] transition-colors"
                 >
                   Privacy, Cookies &amp; GDPR
                 </button>
               </div>
 
-              <div className="w-full md:w-[320px] shrink-0 flex flex-col gap-4">
+              <div className="w-full md:w-[278px] shrink-0 flex flex-col gap-3">
                 <button
                   type="button"
                   onClick={handleAccept}
-                  className="w-full rounded-full bg-krb-purple px-6 py-4 text-white text-lg leading-none font-semibold hover:brightness-110 transition"
+                  className="w-full rounded-full bg-krb-purple px-5 py-3 text-white text-base leading-none font-semibold hover:brightness-110 transition"
                 >
                   Accept All Cookies
                 </button>
                 <button
                   type="button"
                   onClick={handleReject}
-                  className="w-full rounded-full bg-krb-purple px-6 py-4 text-white text-lg leading-none font-semibold hover:brightness-110 transition"
+                  className="w-full rounded-full bg-krb-purple px-5 py-3 text-white text-base leading-none font-semibold hover:brightness-110 transition"
                 >
                   Reject All Cookies
                 </button>
                 <button
                   type="button"
                   onClick={handleManage}
-                  className="w-full rounded-full border border-slate-600 bg-transparent px-6 py-4 text-slate-900 text-lg leading-none font-semibold hover:bg-slate-200 transition"
+                  className="w-full rounded-full border border-slate-600 bg-transparent px-5 py-3 text-slate-900 text-base leading-none font-semibold hover:bg-slate-200 transition"
                 >
                   Cookie Settings
                 </button>

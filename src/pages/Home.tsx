@@ -44,6 +44,7 @@ const Home = () => {
   const [isDraggingComparison, setIsDraggingComparison] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
   const comparisonRef = useRef<HTMLDivElement>(null);
+  const activeComparisonPointerId = useRef<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -59,7 +60,35 @@ const Home = () => {
 
     const rect = comparisonRef.current.getBoundingClientRect();
     const next = ((clientX - rect.left) / rect.width) * 100;
-    setComparisonPosition(Math.min(94, Math.max(6, next)));
+    setComparisonPosition(Math.min(98, Math.max(2, next)));
+  };
+
+  const beginComparisonDrag = (pointerId: number, clientX: number) => {
+    if (!comparisonRef.current) {
+      return;
+    }
+
+    activeComparisonPointerId.current = pointerId;
+    comparisonRef.current.setPointerCapture(pointerId);
+    setIsDraggingComparison(true);
+    updateComparisonPosition(clientX);
+  };
+
+  const endComparisonDrag = (pointerId: number) => {
+    if (!comparisonRef.current) {
+      return;
+    }
+
+    if (activeComparisonPointerId.current !== pointerId) {
+      return;
+    }
+
+    if (comparisonRef.current.hasPointerCapture(pointerId)) {
+      comparisonRef.current.releasePointerCapture(pointerId);
+    }
+
+    activeComparisonPointerId.current = null;
+    setIsDraggingComparison(false);
   };
 
   const services = [
@@ -175,15 +204,15 @@ const Home = () => {
           <div className="grid lg:grid-cols-[1.65fr_1fr] overflow-hidden min-h-[360px] sm:min-h-[520px] lg:min-h-[620px]">
             <div
               ref={comparisonRef}
-              className="relative select-none touch-pan-y"
+              className="relative select-none touch-pan-y cursor-ew-resize"
+              onPointerDown={(e) => beginComparisonDrag(e.pointerId, e.clientX)}
               onPointerMove={(e) => {
-                if (isDraggingComparison) {
+                if (isDraggingComparison && activeComparisonPointerId.current === e.pointerId) {
                   updateComparisonPosition(e.clientX);
                 }
               }}
-              onPointerUp={() => setIsDraggingComparison(false)}
-              onPointerLeave={() => setIsDraggingComparison(false)}
-              onPointerCancel={() => setIsDraggingComparison(false)}
+              onPointerUp={(e) => endComparisonDrag(e.pointerId)}
+              onPointerCancel={(e) => endComparisonDrag(e.pointerId)}
             >
               <img
                 src="/kitchen-renovation1.png"
@@ -215,28 +244,14 @@ const Home = () => {
                 aria-hidden="true"
               />
 
-              <button
-                type="button"
-                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-11 h-11 sm:w-10 sm:h-10 rounded-full bg-white text-krb-purple border border-slate-200 shadow-xl flex items-center justify-center cursor-ew-resize active:scale-95 transition-transform"
+              <div
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-14 h-14 sm:w-10 sm:h-10 rounded-full bg-white text-krb-purple border border-slate-200 shadow-xl flex items-center justify-center pointer-events-none"
                 style={{ left: `${comparisonPosition}%` }}
-                onPointerDown={(e) => {
-                  e.currentTarget.setPointerCapture(e.pointerId);
-                  setIsDraggingComparison(true);
-                  updateComparisonPosition(e.clientX);
-                }}
-                onPointerMove={(e) => {
-                  if (isDraggingComparison) {
-                    updateComparisonPosition(e.clientX);
-                  }
-                }}
-                onPointerUp={() => setIsDraggingComparison(false)}
-                onPointerCancel={() => setIsDraggingComparison(false)}
-                aria-label="Drag to compare before and after"
+                aria-hidden="true"
               >
-                <span className="sr-only">Drag slider</span>
                 <ChevronRight size={14} className="rotate-180 -mr-0.5" />
                 <ChevronRight size={14} className="-ml-0.5" />
-              </button>
+              </div>
 
               <div className="absolute left-4 bottom-4 bg-black/55 text-white text-[10px] uppercase tracking-[0.14em] font-bold px-3 py-1.5 rounded-full">
                 Before

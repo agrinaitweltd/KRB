@@ -76,8 +76,8 @@ export default async function handler(req, res) {
   }
 
   const resendApiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_BOOKING_FROM || 'KRB Facilities Management <bookings@krbfm.co.uk>';
-  const adminEmail = process.env.BOOKING_ADMIN_EMAIL || 'admin@krbfm.co.uk';
+  const fromEmail = process.env.RESEND_BOOKING_FROM || 'KRB Facilities Management <no-reply@krbfm.co.uk>';
+  const adminEmail = process.env.BOOKING_ADMIN_EMAIL || 'krbfm194@gmail.com';
 
   if (!resendApiKey) {
     return res.status(500).json({ message: 'Email service is not configured. Missing RESEND_API_KEY.' });

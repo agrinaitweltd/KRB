@@ -32,7 +32,7 @@ Serverless endpoint: `/api/booking-request`
 Set these environment variables in Vercel Project Settings -> Environment Variables:
 
 - `RESEND_API_KEY`
-- `RESEND_BOOKING_FROM` (example: `KRB Facilities Management <bookings@krbfm.co.uk>`)
+- `RESEND_BOOKING_FROM` (example: `KRB Facilities Management <no-reply@krbfm.co.uk>`)
 - `BOOKING_ADMIN_EMAIL` (inbox to receive booking notifications)
 
 For local development, place the same variables in `.env.local`.

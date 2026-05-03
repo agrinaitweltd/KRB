@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Globe, Clock, Send, Shield, ThumbsUp, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, CheckCircle2, ArrowRight, Home, Building2, Building, Warehouse, Package, Layers } from 'lucide-react';
 import { motion } from 'motion/react';
 import ImageShowcase from '../components/ImageShowcase';
 import { contactImageSlots } from '../data/siteImageSlots';
+
+const PROPERTY_TYPES = [
+  { value: 'House', Icon: Home, label: 'House' },
+  { value: 'Flat / Apartment', Icon: Building2, label: 'Flat' },
+  { value: 'Office', Icon: Building, label: 'Office' },
+  { value: 'Commercial Unit', Icon: Warehouse, label: 'Commercial' },
+  { value: 'Studio', Icon: Layers, label: 'Studio' },
+  { value: 'Other', Icon: Package, label: 'Other' },
+];
+
+const inputCls = 'w-full border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700 bg-white focus:border-krb-blue focus:ring-2 focus:ring-krb-blue/10 outline-none transition-all';
+const labelCls = 'block text-sm font-semibold text-slate-500 mb-1.5';
+const selectCls = `${inputCls} appearance-none cursor-pointer`;
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState('');
+  const [propertyType, setPropertyType] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,7 +43,7 @@ const Contact = () => {
       preferredTime: String(formData.get('preferredTime') || '').trim(),
       serviceAddress: String(formData.get('serviceAddress') || '').trim(),
       townCity: String(formData.get('townCity') || '').trim(),
-      propertyType: String(formData.get('propertyType') || '').trim(),
+      propertyType: propertyType,
       urgency: String(formData.get('urgency') || '').trim(),
       estimatedBudget: String(formData.get('estimatedBudget') || '').trim(),
       accessDetails: String(formData.get('accessDetails') || '').trim(),
@@ -57,6 +71,7 @@ const Contact = () => {
       }
 
       form.reset();
+      setPropertyType('');
       setSubmitSuccess('Thanks, your message has been sent. We will get back to you shortly.');
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Unable to send your message right now.');
@@ -68,8 +83,8 @@ const Contact = () => {
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.6, ease: "easeOut" }
+    viewport: { once: true as const },
+    transition: { duration: 0.6 }
   };
 
   return (
@@ -182,234 +197,266 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div className="lg:col-span-7">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="bg-white p-8 lg:p-16 rounded-3xl shadow-xl border border-slate-100 relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-48 h-48 bg-krb-blue/5 rounded-full -mr-24 -mt-24"></div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-krb-purple mb-4 relative z-10">Send a Message</h3>
-                <p className="text-sm text-slate-500 font-bold leading-relaxed mb-8 relative z-10">Fill in as much detail as possible so we can give you the most accurate response.</p>
-                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              <div className="lg:col-span-7">
+                <h3 className="text-2xl font-bold text-slate-900 mb-1">Send a Message</h3>
+                <p className="text-sm text-slate-400 mb-8">Fill in as much detail as possible so we can give you the most accurate response.</p>
+                <form onSubmit={handleSubmit} className="divide-y divide-slate-100">
 
-                  {/* Row: fullName + email */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">fullName</label>
-                      <input name="fullName" required type="text" placeholder="fullName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">email</label>
-                      <input name="email" required type="email" placeholder="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                  {/* Property type */}
+                  <div className="pb-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Property type</h4>
+                    <p className="text-xs text-slate-400 mb-4">Select the type of property where work is needed.</p>
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                      {PROPERTY_TYPES.map(({ value, Icon, label }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => setPropertyType(value)}
+                          className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center ${
+                            propertyType === value
+                              ? 'border-krb-blue bg-krb-blue/5 text-krb-blue'
+                              : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'
+                          }`}
+                        >
+                          <Icon size={24} strokeWidth={1.5} />
+                          <span className="text-xs font-semibold leading-tight">{label}</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  {/* Row: phone + postcode */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">phone</label>
-                      <input name="phone" required type="tel" placeholder="phone" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">postcode</label>
-                      <input name="postcode" required type="text" placeholder="postcode" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                  </div>
-
-                  {/* Row: companyName + preferredContactMethod */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">companyName</label>
-                      <input name="companyName" type="text" placeholder="companyName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredContactMethod</label>
-                      <select name="preferredContactMethod" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                        <option value="">Select...</option>
-                        <option>Email</option>
-                        <option>Phone Call</option>
-                        <option>Text Message</option>
-                        <option>Any of the above</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Row: serviceRequired */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">serviceRequired</label>
-                    <select name="serviceRequired" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                      <option value="">Select a service...</option>
-                      <option>Fencing Installation</option>
-                      <option>Painting &amp; Decorating</option>
-                      <option>Mirror &amp; TV Mounting</option>
-                      <option>General Handyman Services</option>
-                      <option>Property Maintenance</option>
-                      <option>Carpet Cleaning</option>
-                      <option>Domestic Cleaning</option>
-                      <option>Industrial Cleaning</option>
-                      <option>Office Cleaning</option>
-                      <option>Patio Cleaning</option>
-                      <option>Driveway Cleaning</option>
-                      <option>Other / Multiple Services</option>
-                    </select>
-                  </div>
-
-                  {/* Row: preferredDate + preferredTime */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredDate</label>
-                      <input name="preferredDate" required type="date" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredTime</label>
-                      <select name="preferredTime" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                        <option value="">Select a time window...</option>
-                        <option>08:00 - 10:00</option>
-                        <option>10:00 - 12:00</option>
-                        <option>12:00 - 14:00</option>
-                        <option>14:00 - 16:00</option>
-                        <option>16:00 - 18:00</option>
-                        <option>Flexible</option>
-                      </select>
+                  {/* Your details */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Your details</h4>
+                    <p className="text-xs text-slate-400 mb-5">Your details are shared with our team only.</p>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Full name</label>
+                          <input name="fullName" required type="text" placeholder="Full name" autoComplete="name" className={inputCls} />
+                        </div>
+                        <div>
+                          <label className={labelCls}>Email address</label>
+                          <input name="email" required type="email" placeholder="you@example.com" autoComplete="email" className={inputCls} />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Phone number</label>
+                          <input name="phone" required type="tel" placeholder="+44 07xxx xxxxxx" autoComplete="tel" className={inputCls} />
+                        </div>
+                        <div>
+                          <label className={labelCls}>Company name <span className="text-slate-300 font-normal">(optional)</span></label>
+                          <input name="companyName" type="text" placeholder="Company name" autoComplete="organization" className={inputCls} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Preferred contact method</label>
+                        <div className="relative">
+                          <select name="preferredContactMethod" required className={selectCls}>
+                            <option value="">Select...</option>
+                            <option>Email</option>
+                            <option>Phone Call</option>
+                            <option>Text Message</option>
+                            <option>Any of the above</option>
+                          </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Row: serviceAddress */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">serviceAddress</label>
-                    <input name="serviceAddress" required type="text" placeholder="serviceAddress" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                  {/* Service details */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Service details</h4>
+                    <p className="text-xs text-slate-400 mb-5">Tell us what you need done and when.</p>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={labelCls}>Service required</label>
+                        <div className="relative">
+                          <select name="serviceRequired" required className={selectCls}>
+                            <option value="">Select a service...</option>
+                            <option>Fencing Installation</option>
+                            <option>Painting &amp; Decorating</option>
+                            <option>Mirror &amp; TV Mounting</option>
+                            <option>General Handyman Services</option>
+                            <option>Property Maintenance</option>
+                            <option>Carpet Cleaning</option>
+                            <option>Domestic Cleaning</option>
+                            <option>Industrial Cleaning</option>
+                            <option>Office Cleaning</option>
+                            <option>Patio Cleaning</option>
+                            <option>Driveway Cleaning</option>
+                            <option>Other / Multiple Services</option>
+                          </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Preferred date</label>
+                          <input name="preferredDate" required type="date" className={inputCls} />
+                        </div>
+                        <div>
+                          <label className={labelCls}>Preferred time</label>
+                          <div className="relative">
+                            <select name="preferredTime" required className={selectCls}>
+                              <option value="">Select a window...</option>
+                              <option>08:00 - 10:00</option>
+                              <option>10:00 - 12:00</option>
+                              <option>12:00 - 14:00</option>
+                              <option>14:00 - 16:00</option>
+                              <option>16:00 - 18:00</option>
+                              <option>Flexible</option>
+                            </select>
+                            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Urgency</label>
+                          <div className="relative">
+                            <select name="urgency" required className={selectCls}>
+                              <option value="">Select urgency...</option>
+                              <option>Emergency (Same day)</option>
+                              <option>Priority (1-3 days)</option>
+                              <option>Standard (This week)</option>
+                              <option>Flexible (Any suitable date)</option>
+                            </select>
+                            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                          </div>
+                        </div>
+                        <div>
+                          <label className={labelCls}>Estimated budget</label>
+                          <div className="relative">
+                            <select name="estimatedBudget" required className={selectCls}>
+                              <option value="">Select a range...</option>
+                              <option>Under £200</option>
+                              <option>£200 - £500</option>
+                              <option>£500 - £1,000</option>
+                              <option>£1,000+</option>
+                              <option>Need guidance before deciding</option>
+                            </select>
+                            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Row: townCity + propertyType */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">townCity</label>
-                      <input name="townCity" required type="text" placeholder="townCity" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">propertyType</label>
-                      <select name="propertyType" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                        <option value="">Select property type...</option>
-                        <option>House</option>
-                        <option>Flat / Apartment</option>
-                        <option>Office</option>
-                        <option>Commercial Unit</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Row: urgency + estimatedBudget */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">urgency</label>
-                      <select name="urgency" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                        <option value="">Select urgency...</option>
-                        <option>Emergency (Same day)</option>
-                        <option>Priority (1-3 days)</option>
-                        <option>Standard (This week)</option>
-                        <option>Flexible (Any suitable date)</option>
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">estimatedBudget</label>
-                      <select name="estimatedBudget" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                        <option value="">Select budget range...</option>
-                        <option>Under GBP 200</option>
-                        <option>GBP 200 - GBP 500</option>
-                        <option>GBP 500 - GBP 1,000</option>
-                        <option>GBP 1,000+</option>
-                        <option>Need guidance before deciding</option>
-                      </select>
+                  {/* Location */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Location</h4>
+                    <p className="text-xs text-slate-400 mb-5">Where will the work take place?</p>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={labelCls}>Service address</label>
+                        <input name="serviceAddress" required type="text" placeholder="e.g. 14 High Street" autoComplete="street-address" className={inputCls} />
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Town / City</label>
+                          <input name="townCity" required type="text" placeholder="e.g. London" autoComplete="address-level2" className={inputCls} />
+                        </div>
+                        <div>
+                          <label className={labelCls}>Postcode</label>
+                          <input name="postcode" required type="text" placeholder="e.g. SW1A 1AA" autoComplete="postal-code" className={inputCls} />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Row: accessDetails + parkingInfo */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">accessDetails</label>
-                      <input name="accessDetails" required type="text" placeholder="accessDetails" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">parkingInfo</label>
-                      <input name="parkingInfo" required type="text" placeholder="parkingInfo" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
-                    </div>
-                  </div>
-
-                  {/* Row: materialsSupplied */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">materialsSupplied</label>
-                    <select name="materialsSupplied" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                      <option value="">Choose an option...</option>
-                      <option>Yes, all materials ready on site</option>
-                      <option>Partially, need help sourcing remaining items</option>
-                      <option>No, please include materials in the quote</option>
-                    </select>
-                  </div>
-
-                  {/* addOns checkboxes */}
-                  <div className="space-y-3">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-1">addOns</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-bold text-slate-600">
-                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                        <input name="addOns" value="Waste Removal" type="checkbox" className="accent-krb-blue" />
-                        Waste Removal
+                  {/* Site access */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Site access</h4>
+                    <p className="text-xs text-slate-400 mb-5">Help us plan the visit with no surprises.</p>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelCls}>Access details</label>
+                          <input name="accessDetails" required type="text" placeholder="e.g. Key with neighbour, entry code" className={inputCls} />
+                        </div>
+                        <div>
+                          <label className={labelCls}>Parking info</label>
+                          <input name="parkingInfo" required type="text" placeholder="e.g. Free street parking outside" className={inputCls} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Materials supplied</label>
+                        <div className="relative">
+                          <select name="materialsSupplied" required className={selectCls}>
+                            <option value="">Choose an option...</option>
+                            <option>Yes, all materials ready on site</option>
+                            <option>Partially, need help sourcing remaining items</option>
+                            <option>No, please include materials in the quote</option>
+                          </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                        </div>
+                      </div>
+                      <label className="flex items-center gap-3 text-sm font-semibold text-slate-600 cursor-pointer select-none">
+                        <input name="petsOnSite" type="checkbox" className="w-4 h-4 accent-krb-blue" />
+                        Pets on site
                       </label>
-                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                        <input name="addOns" value="Aftercare Plan" type="checkbox" className="accent-krb-blue" />
-                        Aftercare Plan
-                      </label>
-                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                        <input name="addOns" value="Before/After Photo Report" type="checkbox" className="accent-krb-blue" />
-                        Before/After Photo Report
-                      </label>
-                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                        <input name="addOns" value="Out of Hours Appointment" type="checkbox" className="accent-krb-blue" />
-                        Out of Hours Appointment
-                      </label>
                     </div>
                   </div>
 
-                  {/* petsOnSite */}
-                  <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl text-sm font-bold text-slate-600">
-                    <input name="petsOnSite" type="checkbox" className="accent-krb-blue" />
-                    petsOnSite
-                  </label>
-
-                  {/* workDescription */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">workDescription</label>
-                    <textarea name="workDescription" required placeholder="workDescription" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-40 resize-none"></textarea>
+                  {/* Add-ons */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Add-ons</h4>
+                    <p className="text-xs text-slate-400 mb-5">Optional extras to include.</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {['Waste Removal', 'Aftercare Plan', 'Before/After Photo Report', 'Out of Hours Appointment'].map((addon) => (
+                        <label key={addon} className="flex items-center gap-3 border border-slate-200 rounded-lg px-4 py-3 text-sm font-semibold text-slate-600 cursor-pointer hover:border-krb-blue/40 hover:bg-slate-50 transition-all">
+                          <input name="addOns" value={addon} type="checkbox" className="w-4 h-4 accent-krb-blue" />
+                          {addon}
+                        </label>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* preferredOutcome */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredOutcome</label>
-                    <textarea name="preferredOutcome" required placeholder="preferredOutcome" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-32 resize-none"></textarea>
+                  {/* Requirements */}
+                  <div className="py-8">
+                    <h4 className="text-base font-bold text-slate-800 mb-1">Your requirements</h4>
+                    <p className="text-xs text-slate-400 mb-5">The more detail here, the more accurate the quote.</p>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={labelCls}>Work description</label>
+                        <textarea name="workDescription" required placeholder="Describe the work needed, scope, materials, or anything else relevant..." className={`${inputCls} h-36 resize-none`}></textarea>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Preferred outcome</label>
+                        <textarea name="preferredOutcome" required placeholder="What does a successful job look like to you?" className={`${inputCls} h-28 resize-none`}></textarea>
+                      </div>
+                    </div>
                   </div>
-                  <motion.button 
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    className="btn-primary w-full py-5 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? 'Sending Message...' : 'Send Message'} <Send size={18} />
-                  </motion.button>
-                  {submitSuccess && (
-                    <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-3 font-bold">
-                      {submitSuccess}
-                    </p>
-                  )}
-                  {submitError && (
-                    <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3 font-bold">
-                      {submitError}
-                    </p>
-                  )}
+
+                  {/* Submit */}
+                  <div className="pt-6">
+                    {submitSuccess && (
+                      <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3 font-semibold mb-4">
+                        {submitSuccess}
+                      </p>
+                    )}
+                    {submitError && (
+                      <p className="text-sm text-red-600 font-semibold bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
+                        {submitError}
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || !propertyType}
+                      className="w-full bg-krb-purple text-white font-bold text-sm py-4 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-krb-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? 'Sending Message...' : 'Send Message'}
+                      {!isSubmitting && <ArrowRight size={18} />}
+                    </button>
+                    {!propertyType && (
+                      <p className="text-xs text-slate-400 text-center mt-3">Please select a property type above to continue.</p>
+                    )}
+                  </div>
                 </form>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>

@@ -199,31 +199,31 @@ const Quote = () => {
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Full Name</label>
-                            <input required name="fullName" autoComplete="name" type="text" placeholder="Enter your full name" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">fullName</label>
+                            <input required name="fullName" autoComplete="name" type="text" placeholder="fullName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Email Address</label>
-                            <input required name="email" autoComplete="email" type="email" placeholder="you@example.com" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Phone Number</label>
-                            <input required name="phone" autoComplete="tel" type="tel" placeholder="07xxx xxxxxx" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Postcode</label>
-                            <input required name="postcode" autoComplete="postal-code" type="text" placeholder="e.g. B23 6TT" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">email</label>
+                            <input required name="email" autoComplete="email" type="email" placeholder="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Company Name (Optional)</label>
-                            <input name="companyName" autoComplete="organization" type="text" placeholder="For commercial bookings" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">phone</label>
+                            <input required name="phone" autoComplete="tel" type="tel" placeholder="phone" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Preferred Contact Method</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">postcode</label>
+                            <input required name="postcode" autoComplete="postal-code" type="text" placeholder="postcode" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">companyName</label>
+                            <input name="companyName" autoComplete="organization" type="text" placeholder="companyName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredContactMethod</label>
                             <select required name="preferredContactMethod" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select contact preference...</option>
                               <option>Email</option>
@@ -258,7 +258,7 @@ const Quote = () => {
                           Provide service scope, site constraints, and outcomes you care about most. This helps us prepare the right team and avoid delays.
                         </p>
                         <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Service Required</label>
+                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">serviceRequired</label>
                           <div className="relative">
                             <select required name="serviceRequired" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select a service...</option>
@@ -282,11 +282,11 @@ const Quote = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Preferred Date</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredDate</label>
                             <input required name="preferredDate" type="date" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Preferred Time</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredTime</label>
                             <select required name="preferredTime" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select a time window...</option>
                               <option>08:00 - 10:00</option>
@@ -299,16 +299,16 @@ const Quote = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Service Address</label>
-                          <input required name="serviceAddress" autoComplete="street-address" type="text" placeholder="Building number, street, area" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">serviceAddress</label>
+                          <input required name="serviceAddress" autoComplete="street-address" type="text" placeholder="serviceAddress" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Town / City</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">townCity</label>
                             <input required name="townCity" autoComplete="address-level2" type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Property Type</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">propertyType</label>
                             <select required name="propertyType" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select property type...</option>
                               <option>House</option>
@@ -321,7 +321,7 @@ const Quote = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Urgency</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">urgency</label>
                             <select required name="urgency" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select urgency...</option>
                               <option>Emergency (Same day)</option>
@@ -331,7 +331,7 @@ const Quote = () => {
                             </select>
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Estimated Budget</label>
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">estimatedBudget</label>
                             <select required name="estimatedBudget" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                               <option value="">Select budget range...</option>
                               <option>Under GBP 200</option>
@@ -344,16 +344,16 @@ const Quote = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Site Access Details</label>
-                            <input required name="accessDetails" type="text" placeholder="Gate codes, floor level, restricted access" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">accessDetails</label>
+                            <input required name="accessDetails" type="text" placeholder="accessDetails" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Parking / Loading Notes</label>
-                            <input required name="parkingInfo" type="text" placeholder="Permit needed, driveway access, loading bay" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
+                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">parkingInfo</label>
+                            <input required name="parkingInfo" type="text" placeholder="parkingInfo" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Are Materials Supplied?</label>
+                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">materialsSupplied</label>
                           <select required name="materialsSupplied" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
                             <option value="">Choose an option...</option>
                             <option>Yes, all materials ready on site</option>
@@ -362,7 +362,7 @@ const Quote = () => {
                           </select>
                         </div>
                         <div className="space-y-3">
-                          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-1">Optional Add-ons</p>
+                          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-1">addOns</p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-bold text-slate-600">
                             <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
                               <input name="addOns" value="Waste Removal" type="checkbox" className="accent-krb-blue" />
@@ -384,15 +384,15 @@ const Quote = () => {
                         </div>
                         <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl text-sm font-bold text-slate-600">
                           <input name="petsOnSite" type="checkbox" className="accent-krb-blue" />
-                          Pets are usually on-site (helps us plan safe access).
+petsOnSite
                         </label>
                         <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Work Description</label>
-                          <textarea required name="workDescription" placeholder="Describe what needs doing, measurements if known, and any existing damage or issues." className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-40 sm:h-48 resize-none"></textarea>
+                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">workDescription</label>
+                          <textarea required name="workDescription" placeholder="workDescription" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-40 sm:h-48 resize-none"></textarea>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">Preferred Outcome</label>
-                          <textarea required name="preferredOutcome" placeholder="What does success look like for you? Include finish quality, timeline, and any must-haves." className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-32 resize-none"></textarea>
+                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredOutcome</label>
+                          <textarea required name="preferredOutcome" placeholder="preferredOutcome" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-32 resize-none"></textarea>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-4">
                           <button 

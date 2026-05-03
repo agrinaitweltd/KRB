@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY;
+  const resendApiKey = process.env.RESEND_API_KEY || 're_9X3UQJxH_LivNe6cShBGupMueHGPeeU8L';
   const fromEmail = process.env.RESEND_BOOKING_FROM || 'KRB Facilities Management <no-reply@krbfm.co.uk>';
   const adminEmail = process.env.BOOKING_ADMIN_EMAIL || 'krbfm194@gmail.com';
 

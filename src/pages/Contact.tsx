@@ -21,8 +21,24 @@ const Contact = () => {
       fullName: String(formData.get('fullName') || '').trim(),
       email: String(formData.get('email') || '').trim(),
       phone: String(formData.get('phone') || '').trim(),
-      serviceType: String(formData.get('serviceType') || '').trim(),
-      message: String(formData.get('message') || '').trim(),
+      postcode: String(formData.get('postcode') || '').trim(),
+      companyName: String(formData.get('companyName') || '').trim(),
+      preferredContactMethod: String(formData.get('preferredContactMethod') || '').trim(),
+      serviceRequired: String(formData.get('serviceRequired') || '').trim(),
+      preferredDate: String(formData.get('preferredDate') || '').trim(),
+      preferredTime: String(formData.get('preferredTime') || '').trim(),
+      serviceAddress: String(formData.get('serviceAddress') || '').trim(),
+      townCity: String(formData.get('townCity') || '').trim(),
+      propertyType: String(formData.get('propertyType') || '').trim(),
+      urgency: String(formData.get('urgency') || '').trim(),
+      estimatedBudget: String(formData.get('estimatedBudget') || '').trim(),
+      accessDetails: String(formData.get('accessDetails') || '').trim(),
+      parkingInfo: String(formData.get('parkingInfo') || '').trim(),
+      materialsSupplied: String(formData.get('materialsSupplied') || '').trim(),
+      petsOnSite: Boolean(formData.get('petsOnSite')),
+      addOns: formData.getAll('addOns').map((v) => String(v)),
+      workDescription: String(formData.get('workDescription') || '').trim(),
+      preferredOutcome: String(formData.get('preferredOutcome') || '').trim(),
     };
 
     try {
@@ -174,66 +190,204 @@ const Contact = () => {
                 className="bg-white p-8 lg:p-16 rounded-3xl shadow-xl border border-slate-100 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-48 h-48 bg-krb-blue/5 rounded-full -mr-24 -mt-24"></div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-krb-purple mb-10 relative z-10">Send a Message</h3>
-                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <h3 className="text-2xl lg:text-3xl font-bold text-krb-purple mb-4 relative z-10">Send a Message</h3>
+                <p className="text-sm text-slate-500 font-bold leading-relaxed mb-8 relative z-10">Fill in as much detail as possible so we can give you the most accurate response.</p>
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+
+                  {/* Row: fullName + email */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Full Name</label>
-                      <input 
-                        name="fullName"
-                        required
-                        type="text" 
-                        placeholder="Your full name"
-                        className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                      />
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">fullName</label>
+                      <input name="fullName" required type="text" placeholder="fullName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Email Address</label>
-                      <input 
-                        name="email"
-                        required
-                        type="email" 
-                        placeholder="you@example.com"
-                        className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                      />
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">email</label>
+                      <input name="email" required type="email" placeholder="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                  {/* Row: phone + postcode */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Phone Number</label>
-                      <input 
-                        name="phone"
-                        required
-                        type="tel" 
-                        placeholder="07xxx xxxxxx"
-                        className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
-                      />
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">phone</label>
+                      <input name="phone" required type="tel" placeholder="phone" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Service Type</label>
-                      <div className="relative">
-                        <select name="serviceType" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
-                          <option>General Enquiry</option>
-                          <option>Fencing</option>
-                          <option>Painting</option>
-                          <option>Mounting</option>
-                          <option>Handyman</option>
-                          <option>Maintenance</option>
-                        </select>
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-krb-blue">
-                          <Send size={14} className="rotate-90" />
-                        </div>
-                      </div>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">postcode</label>
+                      <input name="postcode" required type="text" placeholder="postcode" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
                     </div>
                   </div>
+
+                  {/* Row: companyName + preferredContactMethod */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">companyName</label>
+                      <input name="companyName" type="text" placeholder="companyName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredContactMethod</label>
+                      <select name="preferredContactMethod" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <option value="">Select...</option>
+                        <option>Email</option>
+                        <option>Phone Call</option>
+                        <option>Text Message</option>
+                        <option>Any of the above</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row: serviceRequired */}
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Your Message</label>
-                    <textarea 
-                      name="message"
-                      required
-                      placeholder="Tell us how we can help and any preferred timelines."
-                      className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-6 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-40 resize-none" 
-                    ></textarea>
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">serviceRequired</label>
+                    <select name="serviceRequired" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                      <option value="">Select a service...</option>
+                      <option>Fencing Installation</option>
+                      <option>Painting &amp; Decorating</option>
+                      <option>Mirror &amp; TV Mounting</option>
+                      <option>General Handyman Services</option>
+                      <option>Property Maintenance</option>
+                      <option>Carpet Cleaning</option>
+                      <option>Domestic Cleaning</option>
+                      <option>Industrial Cleaning</option>
+                      <option>Office Cleaning</option>
+                      <option>Patio Cleaning</option>
+                      <option>Driveway Cleaning</option>
+                      <option>Other / Multiple Services</option>
+                    </select>
+                  </div>
+
+                  {/* Row: preferredDate + preferredTime */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredDate</label>
+                      <input name="preferredDate" required type="date" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredTime</label>
+                      <select name="preferredTime" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <option value="">Select a time window...</option>
+                        <option>08:00 - 10:00</option>
+                        <option>10:00 - 12:00</option>
+                        <option>12:00 - 14:00</option>
+                        <option>14:00 - 16:00</option>
+                        <option>16:00 - 18:00</option>
+                        <option>Flexible</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row: serviceAddress */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">serviceAddress</label>
+                    <input name="serviceAddress" required type="text" placeholder="serviceAddress" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                  </div>
+
+                  {/* Row: townCity + propertyType */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">townCity</label>
+                      <input name="townCity" required type="text" placeholder="townCity" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">propertyType</label>
+                      <select name="propertyType" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <option value="">Select property type...</option>
+                        <option>House</option>
+                        <option>Flat / Apartment</option>
+                        <option>Office</option>
+                        <option>Commercial Unit</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row: urgency + estimatedBudget */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">urgency</label>
+                      <select name="urgency" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <option value="">Select urgency...</option>
+                        <option>Emergency (Same day)</option>
+                        <option>Priority (1-3 days)</option>
+                        <option>Standard (This week)</option>
+                        <option>Flexible (Any suitable date)</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">estimatedBudget</label>
+                      <select name="estimatedBudget" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <option value="">Select budget range...</option>
+                        <option>Under GBP 200</option>
+                        <option>GBP 200 - GBP 500</option>
+                        <option>GBP 500 - GBP 1,000</option>
+                        <option>GBP 1,000+</option>
+                        <option>Need guidance before deciding</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row: accessDetails + parkingInfo */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">accessDetails</label>
+                      <input name="accessDetails" required type="text" placeholder="accessDetails" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">parkingInfo</label>
+                      <input name="parkingInfo" required type="text" placeholder="parkingInfo" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" />
+                    </div>
+                  </div>
+
+                  {/* Row: materialsSupplied */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">materialsSupplied</label>
+                    <select name="materialsSupplied" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                      <option value="">Choose an option...</option>
+                      <option>Yes, all materials ready on site</option>
+                      <option>Partially, need help sourcing remaining items</option>
+                      <option>No, please include materials in the quote</option>
+                    </select>
+                  </div>
+
+                  {/* addOns checkboxes */}
+                  <div className="space-y-3">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-1">addOns</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-bold text-slate-600">
+                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
+                        <input name="addOns" value="Waste Removal" type="checkbox" className="accent-krb-blue" />
+                        Waste Removal
+                      </label>
+                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
+                        <input name="addOns" value="Aftercare Plan" type="checkbox" className="accent-krb-blue" />
+                        Aftercare Plan
+                      </label>
+                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
+                        <input name="addOns" value="Before/After Photo Report" type="checkbox" className="accent-krb-blue" />
+                        Before/After Photo Report
+                      </label>
+                      <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
+                        <input name="addOns" value="Out of Hours Appointment" type="checkbox" className="accent-krb-blue" />
+                        Out of Hours Appointment
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* petsOnSite */}
+                  <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl text-sm font-bold text-slate-600">
+                    <input name="petsOnSite" type="checkbox" className="accent-krb-blue" />
+                    petsOnSite
+                  </label>
+
+                  {/* workDescription */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">workDescription</label>
+                    <textarea name="workDescription" required placeholder="workDescription" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-40 resize-none"></textarea>
+                  </div>
+
+                  {/* preferredOutcome */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">preferredOutcome</label>
+                    <textarea name="preferredOutcome" required placeholder="preferredOutcome" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-32 resize-none"></textarea>
                   </div>
                   <motion.button 
                     type="submit"

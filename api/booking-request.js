@@ -137,21 +137,25 @@ export default async function handler(req, res) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(preheader)}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;">
+<body style="margin:0;padding:0;background:#f1f5f9;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px;">
     <tr><td align="center">
-      <table cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+      <table cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.09);">
         <!-- Header -->
         <tr>
-          <td style="background:#07273f;padding:28px 36px;">
-            <table cellpadding="0" cellspacing="0"><tr>
+          <td style="background:linear-gradient(135deg,#07273f 0%,#0e4c78 100%);padding:28px 36px;">
+            <table cellpadding="0" cellspacing="0" width="100%"><tr>
               <td style="vertical-align:middle;">
-                <span style="font-size:28px;font-weight:900;color:#59b947;letter-spacing:-1px;font-family:Arial,sans-serif;">KRB</span>
-                <span style="font-size:11px;font-weight:700;color:#ffffff;margin-left:10px;letter-spacing:0.18em;text-transform:uppercase;font-family:Arial,sans-serif;">Facilities Management</span>
+                <img src="https://krbfm.co.uk/krb-logo.png" alt="KRB Facilities Management" width="52" height="52" style="display:inline-block;vertical-align:middle;border-radius:10px;margin-right:14px;" />
+                <span style="display:inline-block;vertical-align:middle;">
+                  <span style="font-family:'Montserrat',Arial,sans-serif;font-size:22px;font-weight:900;color:#59b947;letter-spacing:-0.5px;">KRB</span>
+                  <span style="font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);margin-left:8px;letter-spacing:0.2em;text-transform:uppercase;">Facilities Management</span>
+                </span>
               </td>
             </tr></table>
-            <p style="margin:10px 0 0;color:rgba(255,255,255,0.45);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-family:Arial,sans-serif;">${escapeHtml(preheader)}</p>
+            <p style="margin:12px 0 0;font-family:'Montserrat',Arial,sans-serif;color:rgba(255,255,255,0.40);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">${escapeHtml(preheader)}</p>
           </td>
         </tr>
         <!-- Body -->
@@ -160,18 +164,22 @@ export default async function handler(req, res) {
             ${bodyContent}
           </td>
         </tr>
+        <!-- Divider -->
+        <tr><td style="padding:0 36px;"><hr style="border:none;border-top:1px solid #e2e8f0;margin:0;" /></td></tr>
         <!-- Footer -->
         <tr>
-          <td style="background:#f8fafc;border-top:2px solid #e2e8f0;padding:22px 36px;">
-            <p style="margin:0;font-size:12px;color:#94a3b8;line-height:2;font-family:Arial,sans-serif;">
-              KRB Facilities Management &nbsp;&bull;&nbsp;
-              <a href="https://krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">krbfm.co.uk</a>
-              &nbsp;&bull;&nbsp;
-              <a href="tel:03335772280" style="color:#1b9ce5;text-decoration:none;">0333 577 2280</a>
-              &nbsp;&bull;&nbsp;
-              <a href="mailto:info@krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">info@krbfm.co.uk</a>
-            </p>
-            <p style="margin:4px 0 0;font-size:11px;color:#cbd5e1;font-family:Arial,sans-serif;">Serving Croydon, Purley, Thornton Heath, Coulsdon &amp; South London</p>
+          <td style="padding:20px 36px 28px;">
+            <table cellpadding="0" cellspacing="0" width="100%"><tr>
+              <td>
+                <p style="margin:0 0 6px;font-family:'Montserrat',Arial,sans-serif;font-size:12px;font-weight:700;color:#334155;">KRB Facilities Management</p>
+                <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:11px;color:#94a3b8;line-height:1.8;">
+                  <a href="https://krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">krbfm.co.uk</a>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;<a href="tel:03335772280" style="color:#1b9ce5;text-decoration:none;">0333 577 2280</a>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;<a href="mailto:info@krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">info@krbfm.co.uk</a>
+                </p>
+                <p style="margin:4px 0 0;font-family:'Montserrat',Arial,sans-serif;font-size:10px;color:#cbd5e1;">Serving Croydon, Purley, Thornton Heath, Coulsdon &amp; South London</p>
+              </td>
+            </tr></table>
           </td>
         </tr>
       </table>
@@ -181,22 +189,29 @@ export default async function handler(req, res) {
 
   const customerHtml = emailShell(
     'Booking Request Received',
-    `<h2 style="margin:0 0 16px;font-size:22px;font-weight:900;color:#07273f;font-family:Arial,sans-serif;">Your booking request has been received</h2>
-     <p style="margin:0 0 10px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Hi ${escapeHtml(payload.fullName)},</p>
-     <p style="margin:0 0 10px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Thanks for choosing <strong>KRB Facilities Management</strong>. We've received your booking request and our team will review it shortly &mdash; we'll reply with availability and pricing as soon as possible.</p>
-     <p style="margin:0 0 20px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Here's a summary of what you submitted:</p>
+    `<h2 style="margin:0 0 16px;font-family:'Montserrat',Arial,sans-serif;font-size:22px;font-weight:800;color:#07273f;">Your booking request has been received</h2>
+     <p style="margin:0 0 10px;font-family:'Montserrat',Arial,sans-serif;font-size:14px;color:#334155;line-height:1.7;">Hi <strong>${escapeHtml(payload.fullName)}</strong>,</p>
+     <p style="margin:0 0 10px;font-family:'Montserrat',Arial,sans-serif;font-size:14px;color:#334155;line-height:1.7;">Thanks for choosing <strong>KRB Facilities Management</strong>. We've received your booking request and will review it shortly — we'll reply with availability and pricing as soon as possible.</p>
+     <p style="margin:0 0 24px;font-family:'Montserrat',Arial,sans-serif;font-size:14px;color:#334155;line-height:1.7;">Here's a summary of what you submitted:</p>
      ${detailsTable}
-     <p style="margin:24px 0 0;font-size:14px;color:#64748b;font-family:Arial,sans-serif;">Kind regards,<br /><strong style="color:#07273f;">The KRB Team</strong></p>`
+     <p style="margin:28px 0 0;font-family:'Montserrat',Arial,sans-serif;font-size:13px;color:#64748b;line-height:1.7;">Kind regards,<br /><strong style="color:#07273f;">The KRB Team</strong></p>`
   );
 
   const adminHtml = emailShell(
     'New Booking Request',
-    `<h2 style="margin:0 0 6px;font-size:22px;font-weight:900;color:#07273f;font-family:Arial,sans-serif;">New Booking Request</h2>
-     <p style="margin:0 0 20px;font-size:14px;color:#64748b;font-family:Arial,sans-serif;">Submitted via krbfm.co.uk</p>
-     <div style="background:#fff7ed;border-left:4px solid #59b947;border-radius:4px;padding:14px 16px;margin-bottom:24px;">
-       <p style="margin:0;font-size:14px;color:#334155;font-family:Arial,sans-serif;"><strong>From:</strong> ${escapeHtml(payload.fullName)} &mdash; <a href="mailto:${escapeHtml(payload.email)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.email)}</a> &mdash; <a href="tel:${escapeHtml(payload.phone)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.phone)}</a></p>
-       <p style="margin:6px 0 0;font-size:14px;color:#334155;font-family:Arial,sans-serif;"><strong>Service:</strong> ${escapeHtml(payload.serviceRequired)} &mdash; <strong>Date:</strong> ${escapeHtml(payload.preferredDate)} &mdash; <strong>Urgency:</strong> ${escapeHtml(payload.urgency)}</p>
-     </div>
+    `<h2 style="margin:0 0 4px;font-family:'Montserrat',Arial,sans-serif;font-size:22px;font-weight:800;color:#07273f;">New Booking Request</h2>
+     <p style="margin:0 0 20px;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#94a3b8;">Submitted via krbfm.co.uk</p>
+     <table cellpadding="0" cellspacing="0" style="width:100%;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;margin-bottom:24px;">
+       <tr><td style="padding:14px 18px;">
+         <p style="margin:0 0 4px;font-family:'Montserrat',Arial,sans-serif;font-size:13px;font-weight:700;color:#15803d;">&#x1F4CB;&nbsp; ${escapeHtml(payload.fullName)} — ${escapeHtml(payload.serviceRequired)}</p>
+         <p style="margin:0 0 4px;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#334155;">
+           <a href="mailto:${escapeHtml(payload.email)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.email)}</a>
+           &nbsp;&nbsp;|&nbsp;&nbsp;
+           <a href="tel:${escapeHtml(payload.phone)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.phone)}</a>
+         </p>
+         <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#64748b;"><strong>Date:</strong> ${escapeHtml(payload.preferredDate)} &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Urgency:</strong> ${escapeHtml(payload.urgency)}</p>
+       </td></tr>
+     </table>
      ${detailsTable}`
   );
 

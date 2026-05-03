@@ -434,7 +434,14 @@ const Home = () => {
                   { title: 'Reliable & Punctual', desc: 'We respect your time and always arrive when promised.', icon: Clock },
                   { title: 'Quality Guaranteed', desc: 'All our work is finished to the highest professional standards.', icon: CheckCircle2 },
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-5 p-4 rounded-2xl hover:bg-white hover:shadow-md transition-all duration-300">
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                    className="flex gap-5 p-4 rounded-2xl hover:bg-white hover:shadow-md transition-all duration-300"
+                  >
                     <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-krb-blue shrink-0 shadow-sm">
                       <item.icon size={20} />
                     </div>
@@ -442,7 +449,7 @@ const Home = () => {
                       <h4 className="text-lg font-bold text-krb-purple mb-1">{item.title}</h4>
                       <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>

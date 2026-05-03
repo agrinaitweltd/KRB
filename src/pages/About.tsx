@@ -1,9 +1,48 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, Shield, ThumbsUp, Clock, Users, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageShowcase from '../components/ImageShowcase';
 import { aboutImageSlots } from '../data/siteImageSlots';
+
+function useCountUp(target: number, duration = 1400) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<boolean>(false);
+  useEffect(() => {
+    if (ref.current) return;
+    ref.current = true;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      setCount(Math.round(progress * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [target, duration]);
+  return count;
+}
+
+function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const [inView, setInView] = useState(false);
+  const elRef = useRef<HTMLDivElement>(null);
+  const count = inView ? value : 0;
+  const displayed = useCountUp(count, 1200);
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={elRef} className="group">
+      <div className="text-4xl font-bold text-krb-purple mb-1 group-hover:text-krb-blue transition-colors">
+        {displayed}{suffix}
+      </div>
+      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{label}</div>
+    </div>
+  );
+}
 
 const About = () => {
   const fadeIn = {
@@ -62,14 +101,12 @@ const About = () => {
               </div>
               
               <div className="mt-12 grid grid-cols-2 gap-8">
-                <div className="group">
-                  <div className="text-4xl font-bold text-krb-purple mb-1 group-hover:text-krb-blue transition-colors">15+</div>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Years of Excellence</div>
-                </div>
-                <div className="group">
-                  <div className="text-4xl font-bold text-krb-purple mb-1 group-hover:text-krb-blue transition-colors">100%</div>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Client Satisfaction</div>
-                </div>
+                {[
+                  { value: 15, suffix: '+', label: 'Years of Excellence' },
+                  { value: 100, suffix: '%', label: 'Client Satisfaction' },
+                ].map((stat) => (
+                  <StatCounter key={stat.label} value={stat.value} suffix={stat.suffix} label={stat.label} />
+                ))}
               </div>
             </motion.div>
 

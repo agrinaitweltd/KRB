@@ -106,119 +106,78 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="max-w-3xl"
           >
-            <span className="text-krb-yellow font-bold text-[10px] uppercase tracking-[0.3em] mb-6 block">Get In Touch</span>
+            <motion.span
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-krb-yellow font-bold text-[10px] uppercase tracking-[0.3em] mb-6 block"
+            >Get In Touch</motion.span>
             <h1 className="text-4xl lg:text-6xl font-bold text-white mb-8 leading-tight tracking-tight">
               Contact <br />
               <span className="text-krb-blue">Our Team.</span>
             </h1>
-            <p className="text-lg text-white/60 leading-relaxed max-w-xl">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-lg text-white/60 leading-relaxed max-w-xl"
+            >
               Have a question or want to discuss a project? We're here to help homeowners across Croydon with professional maintenance solutions.
-            </p>
+            </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-20 lg:py-28">
+      {/* Form — first section under hero */}
+      <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-            {/* Contact Info */}
-            <div className="lg:col-span-5">
-              <motion.div {...fadeIn} className="mb-12">
-                <span className="section-subtitle">Connect With Us</span>
-                <h2 className="section-title">We're Ready to <br />Help You</h2>
-                <p className="text-base lg:text-lg text-slate-600 leading-relaxed">
-                  Whether you need a quick repair or a major home improvement, our friendly team is just a call or message away.
-                </p>
-              </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
-              <div className="space-y-8">
-                {[
-                  { icon: Phone, title: 'Call Us', value: '0333 577 2280 / +44 7746 343913', sub: 'Mon - Sat: 8am - 6pm' },
-                  { icon: Mail, title: 'Email Us', value: 'info@krbfm.co.uk', sub: 'Reply within 24 hours', href: 'mailto:info@krbfm.co.uk' },
-                  { icon: Globe, title: 'Website', value: 'krbfm.co.uk', sub: 'Visit us online', href: 'https://krbfm.co.uk' },
-                  { icon: MapPin, title: 'Service Areas', value: 'Croydon, Purley, Thornton Heath, Coulsdon & South London', sub: 'Local Experts' }
-                ].map((item, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex gap-6 group"
-                  >
-                    <div className="w-14 h-14 bg-slate-50 text-krb-blue rounded-xl flex items-center justify-center shrink-0 group-hover:bg-krb-blue group-hover:text-white transition-all duration-300 shadow-sm">
-                      <item.icon size={24} />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-krb-purple mb-1">{item.title}</h4>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target={item.href.startsWith('http') ? '_blank' : undefined}
-                          rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="text-base text-slate-700 font-bold tracking-tight hover:text-krb-blue transition-colors"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-base text-slate-700 font-bold tracking-tight">{item.value}</p>
-                      )}
-                      <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-bold">{item.sub}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div 
-                {...fadeIn}
-                className="mt-12 sm:mt-16 p-6 sm:p-10 bg-krb-purple rounded-3xl text-white relative overflow-hidden shadow-xl"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-12 -mt-12"></div>
-                <h4 className="text-xl font-bold mb-6">Why Contact Us?</h4>
-                <div className="space-y-4">
-                  {[
-                    'Free, no-obligation quotes',
-                    'Expert local advice',
-                    'Reliable scheduling',
-                    'Fully insured service'
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4">
-                      <div className="w-6 h-6 bg-krb-yellow rounded-full flex items-center justify-center text-krb-purple">
-                        <CheckCircle2 size={12} />
-                      </div>
-                      <span className="font-bold text-xs tracking-tight">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="lg:col-span-7">
+            {/* Form column */}
+            <div className="lg:col-span-8">
               {submitted ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center text-center py-20 px-8 bg-white rounded-2xl border border-slate-100 shadow-sm"
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  className="bg-white rounded-2xl p-10 sm:p-14 border border-slate-100 shadow-sm"
                 >
-                  <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 size={44} />
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-14 h-14 rounded-2xl bg-krb-yellow/10 flex items-center justify-center shrink-0">
+                      <CheckCircle2 size={30} className="text-krb-yellow" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-krb-blue mb-0.5">Submitted</p>
+                      <h3 className="text-2xl font-black text-slate-900 leading-tight">All done — we've got it.</h3>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">Message Received!</h3>
-                  <p className="text-slate-500 leading-relaxed mb-2 max-w-md">
-                    Thanks for reaching out. Your message has been sent to our team and a confirmation email is on its way to your inbox.
+                  <p className="text-slate-600 leading-relaxed mb-8 max-w-lg">
+                    A confirmation email has been sent to your inbox. Our team will be in touch within a few hours — usually the same day during working hours.
                   </p>
-                  <p className="text-slate-400 text-sm mb-8">We aim to reply within a few hours during working hours (Mon–Sat, 8am–6pm).</p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="btn-primary"
-                  >
-                    Send Another Message
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                    {[
+                      { step: '01', label: 'Message received', desc: 'Your details are with our team right now.' },
+                      { step: '02', label: 'We review it', desc: 'Usually within a few hours, Mon–Sat 8am–6pm.' },
+                      { step: '03', label: 'We get back to you', desc: 'Via your preferred contact method.' },
+                    ].map((s) => (
+                      <div key={s.step} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                        <span className="text-2xl font-black text-krb-blue/20">{s.step}</span>
+                        <p className="font-bold text-slate-800 text-sm mt-1 mb-1">{s.label}</p>
+                        <p className="text-xs text-slate-400 leading-relaxed">{s.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => setSubmitted(false)} className="btn-secondary text-xs">
+                    Send another message
                   </button>
                 </motion.div>
               ) : (
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 sm:p-10"
+              >
                 <h3 className="text-2xl font-bold text-slate-900 mb-1">Send a Message</h3>
                 <p className="text-sm text-slate-400 mb-8">Fill in as much detail as possible so we can give you the most accurate response.</p>
                 <form onSubmit={handleSubmit} className="divide-y divide-slate-100">
@@ -472,8 +431,60 @@ const Contact = () => {
                     )}
                   </div>
                 </form>
-              </div>
+              </motion.div>
               )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-4 space-y-5">
+              {[
+                { icon: Phone, title: 'Call Us', value: '0333 577 2280', value2: '+44 7746 343913', sub: 'Mon – Sat: 8am – 6pm' },
+                { icon: Mail, title: 'Email Us', value: 'info@krbfm.co.uk', sub: 'Reply within a few hours', href: 'mailto:info@krbfm.co.uk' },
+                { icon: MapPin, title: 'Service Area', value: 'Croydon, Purley, Thornton Heath & South London', sub: 'Local Experts' },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.45 }}
+                  className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex gap-4 items-start"
+                >
+                  <div className="w-10 h-10 bg-krb-blue/8 text-krb-blue rounded-xl flex items-center justify-center shrink-0">
+                    <item.icon size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-0.5">{item.title}</p>
+                    {item.href ? (
+                      <a href={item.href} className="text-sm font-bold text-slate-800 hover:text-krb-blue transition-colors">{item.value}</a>
+                    ) : (
+                      <p className="text-sm font-bold text-slate-800">{item.value}</p>
+                    )}
+                    {'value2' in item && <p className="text-sm font-bold text-slate-800">{item.value2}</p>}
+                    <p className="text-xs text-slate-400 mt-0.5">{item.sub}</p>
+                  </div>
+                </motion.div>
+              ))}
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.45 }}
+                className="bg-krb-purple rounded-2xl p-6 text-white"
+              >
+                <h4 className="font-bold text-base mb-4">Why choose KRB?</h4>
+                <div className="space-y-3">
+                  {['Free, no-obligation quotes', 'Expert local advice', 'Reliable scheduling', 'Fully insured service'].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <div className="w-5 h-5 bg-krb-yellow/20 rounded-full flex items-center justify-center shrink-0">
+                        <CheckCircle2 size={11} className="text-krb-yellow" />
+                      </div>
+                      <span className="text-sm font-semibold text-white/90">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>

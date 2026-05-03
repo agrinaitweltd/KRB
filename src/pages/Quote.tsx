@@ -1,13 +1,25 @@
-import React, { useRef, useState } from 'react';
-import { Send, CheckCircle2, ArrowRight, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from 'react';
+import { CheckCircle2, ArrowRight, Home, Building2, Building, Warehouse, Package, Layers } from 'lucide-react';
+import { motion } from 'motion/react';
+
+const PROPERTY_TYPES = [
+  { value: 'House', Icon: Home, label: 'House' },
+  { value: 'Flat / Apartment', Icon: Building2, label: 'Flat' },
+  { value: 'Office', Icon: Building, label: 'Office' },
+  { value: 'Commercial Unit', Icon: Warehouse, label: 'Commercial' },
+  { value: 'Studio', Icon: Layers, label: 'Studio' },
+  { value: 'Other', Icon: Package, label: 'Other' },
+];
+
+const inputCls = 'w-full border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700 bg-white focus:border-krb-blue focus:ring-2 focus:ring-krb-blue/10 outline-none transition-all';
+const labelCls = 'block text-sm font-semibold text-slate-500 mb-1.5';
+const selectCls = `${inputCls} appearance-none cursor-pointer`;
 
 const Quote = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const [propertyType, setPropertyType] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +40,7 @@ const Quote = () => {
       preferredTime: String(formData.get('preferredTime') || '').trim(),
       serviceAddress: String(formData.get('serviceAddress') || '').trim(),
       townCity: String(formData.get('townCity') || '').trim(),
-      propertyType: String(formData.get('propertyType') || '').trim(),
+      propertyType: propertyType,
       urgency: String(formData.get('urgency') || '').trim(),
       estimatedBudget: String(formData.get('estimatedBudget') || '').trim(),
       accessDetails: String(formData.get('accessDetails') || '').trim(),
@@ -44,9 +56,7 @@ const Quote = () => {
       setIsSubmitting(true);
       const response = await fetch('/api/booking-request', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -57,7 +67,7 @@ const Quote = () => {
 
       setSubmitted(true);
       form.reset();
-      setStep(1);
+      setPropertyType('');
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Unable to send your request at the moment.');
     } finally {
@@ -65,53 +75,23 @@ const Quote = () => {
     }
   };
 
-  const handleNextStep = () => {
-    setSubmitError('');
-    const form = formRef.current;
-
-    if (!form) {
-      setStep(2);
-      return;
-    }
-
-    const stepOneFields = Array.from(form.querySelectorAll('[data-step="1"] [required]')) as Array<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
-    const invalidField = stepOneFields.find((field) => !field.checkValidity());
-
-    if (invalidField) {
-      invalidField.reportValidity();
-      return;
-    }
-
-    setStep(2);
-  };
-
-  const fadeIn = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8, ease: "easeOut" }
-  };
-
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6 bg-slate-50">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full text-center bg-white p-12 lg:p-20 rounded-[64px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] border border-slate-100"
+          className="max-w-md w-full text-center bg-white p-12 lg:p-16 rounded-3xl shadow-xl border border-slate-100"
         >
-          <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-10">
-            <CheckCircle2 size={48} />
+          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+            <CheckCircle2 size={40} />
           </div>
-          <h2 className="text-4xl font-black text-krb-purple mb-6">Quote Requested!</h2>
-          <p className="text-slate-500 mb-10 leading-relaxed font-bold">
+          <h2 className="text-3xl font-black text-krb-purple mb-4">Quote Requested!</h2>
+          <p className="text-slate-500 mb-8 leading-relaxed text-sm">
             Thank you. Your booking request has been received and a confirmation email has been sent to you. We will review your preferred date, time, and location, then email final booking confirmation options and pricing.
           </p>
-          <button 
-            onClick={() => {
-              setSubmitted(false);
-              setStep(1);
-            }}
+          <button
+            onClick={() => setSubmitted(false)}
             className="btn-primary w-full"
           >
             Back to Form
@@ -124,360 +104,348 @@ const Quote = () => {
   return (
     <div className="bg-white overflow-hidden">
       {/* Page Header */}
-      <section className="bg-krb-dark py-20 sm:py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <img 
-            src="/quote.jpg" 
-            alt="Background" 
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-krb-dark via-krb-dark/80 to-krb-dark"></div>
-        </div>
+      <section className="bg-krb-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-3xl"
+            transition={{ duration: 0.8 }}
+            className="max-w-2xl"
           >
-            <span className="text-krb-yellow font-black text-xs uppercase tracking-[0.4em] mb-6 block">Free Estimate</span>
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-6 sm:mb-8 leading-[0.95] tracking-tight">
-              Book a <br />
-              <span className="text-krb-blue">Service.</span>
+            <span className="text-krb-yellow font-black text-xs uppercase tracking-[0.4em] mb-5 block">Free Estimate</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+              Book a <span className="text-krb-blue">Service.</span>
             </h1>
-            <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-xl">
-              Complete the detailed booking form below so we can prepare an accurate estimate, realistic schedule, and a smoother first visit.
+            <p className="text-white/60 text-base leading-relaxed">
+              Complete the form below and we will prepare an accurate quote and schedule.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-14 sm:py-16 lg:py-24">
+      {/* Form */}
+      <section className="py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-            {/* Form Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+            {/* Main Form Column */}
             <div className="lg:col-span-8">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl sm:rounded-[40px] shadow-[0_30px_70px_-25px_rgba(0,0,0,0.12)] border border-slate-100 relative overflow-hidden max-w-4xl lg:max-w-3xl xl:max-w-4xl mx-auto"
+              <motion.form
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="divide-y divide-slate-100"
               >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-krb-blue/5 rounded-full -mr-32 -mt-32"></div>
-                
-                {/* Progress Bar */}
-                <div className="flex items-center gap-3 mb-8 sm:mb-10 relative z-10">
-                  <div className={`h-3 flex-1 rounded-full transition-all duration-700 ${step >= 1 ? 'bg-krb-blue shadow-[0_0_20px_rgba(59,130,246,0.4)]' : 'bg-slate-100'}`}></div>
-                  <div className={`h-3 flex-1 rounded-full transition-all duration-700 ${step >= 2 ? 'bg-krb-blue shadow-[0_0_20px_rgba(59,130,246,0.4)]' : 'bg-slate-100'}`}></div>
+                {/* Section: Property Type */}
+                <div className="pb-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Property type</h2>
+                  <p className="text-sm text-slate-400 mb-6">Select the type of property where work is needed.</p>
+                  <input type="hidden" name="propertyType" value={propertyType} required />
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                    {PROPERTY_TYPES.map(({ value, Icon, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => setPropertyType(value)}
+                        className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all text-center ${
+                          propertyType === value
+                            ? 'border-krb-blue bg-krb-blue/5 text-krb-blue'
+                            : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-700'
+                        }`}
+                      >
+                        <Icon size={28} strokeWidth={1.5} />
+                        <span className="text-xs font-semibold leading-tight">{label}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="bg-krb-blue/[0.06] border border-krb-blue/20 rounded-2xl p-5 mb-8 text-sm text-slate-600 leading-relaxed">
-                  <p className="font-black text-krb-purple mb-2 uppercase tracking-[0.2em] text-[11px]">Before You Submit</p>
-                  <p className="font-bold">
-                    The more detail you provide, the more accurate your first quote will be. Include access issues, parking limits, preferred outcome, and any timing constraints so our team can plan the right crew and equipment in one visit.
-                  </p>
-                </div>
-
-                <form ref={formRef} onSubmit={handleSubmit} className="relative z-10">
-                  <AnimatePresence mode="wait">
-                    {step === 1 ? (
-                      <motion.div
-                        key="step1"
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 30 }}
-                        transition={{ duration: 0.5 }}
-                        className="space-y-6"
-                        data-step="1"
-                      >
-                        <h3 className="text-2xl sm:text-3xl font-black text-krb-purple mb-2">Contact Details</h3>
-                        <p className="text-sm text-slate-500 leading-relaxed font-bold">
-                          Tell us who to contact and how you want updates. We use this information for confirmation, arrival windows, and quote clarifications.
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">fullName</label>
-                            <input required name="fullName" autoComplete="name" type="text" placeholder="fullName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">email</label>
-                            <input required name="email" autoComplete="email" type="email" placeholder="email" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">phone</label>
-                            <input required name="phone" autoComplete="tel" type="tel" placeholder="phone" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">postcode</label>
-                            <input required name="postcode" autoComplete="postal-code" type="text" placeholder="postcode" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">companyName</label>
-                            <input name="companyName" autoComplete="organization" type="text" placeholder="companyName" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredContactMethod</label>
-                            <select required name="preferredContactMethod" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select contact preference...</option>
-                              <option>Email</option>
-                              <option>Phone Call</option>
-                              <option>Text Message</option>
-                              <option>Any of the above</option>
-                            </select>
-                          </div>
-                        </div>
-                        <motion.button 
-                          type="button"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={handleNextStep}
-                          className="btn-primary w-full py-4 text-sm"
-                        >
-                          Next Step <ChevronRight size={20} />
-                        </motion.button>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="step2"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -30 }}
-                        transition={{ duration: 0.5 }}
-                        className="space-y-6"
-                        data-step="2"
-                      >
-                        <h3 className="text-2xl sm:text-3xl font-black text-krb-purple mb-2">Booking Details</h3>
-                        <p className="text-sm text-slate-500 leading-relaxed font-bold">
-                          Provide service scope, site constraints, and outcomes you care about most. This helps us prepare the right team and avoid delays.
-                        </p>
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">serviceRequired</label>
-                          <div className="relative">
-                            <select required name="serviceRequired" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select a service...</option>
-                              <option>Fencing Installation</option>
-                              <option>Painting & Decorating</option>
-                              <option>Mirror & TV Mounting</option>
-                              <option>General Handyman Services</option>
-                              <option>Property Maintenance</option>
-                              <option>Carpet Cleaning</option>
-                              <option>Domestic Cleaning</option>
-                              <option>Industrial Cleaning</option>
-                              <option>Office Cleaning</option>
-                              <option>Patio Cleaning</option>
-                              <option>Driveway Cleaning</option>
-                              <option>Other / Multiple Services</option>
-                            </select>
-                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-krb-blue">
-                              <ChevronRight size={20} className="rotate-90" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredDate</label>
-                            <input required name="preferredDate" type="date" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredTime</label>
-                            <select required name="preferredTime" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select a time window...</option>
-                              <option>08:00 - 10:00</option>
-                              <option>10:00 - 12:00</option>
-                              <option>12:00 - 14:00</option>
-                              <option>14:00 - 16:00</option>
-                              <option>16:00 - 18:00</option>
-                              <option>Flexible</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">serviceAddress</label>
-                          <input required name="serviceAddress" autoComplete="street-address" type="text" placeholder="serviceAddress" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">townCity</label>
-                            <input required name="townCity" autoComplete="address-level2" type="text" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">propertyType</label>
-                            <select required name="propertyType" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select property type...</option>
-                              <option>House</option>
-                              <option>Flat / Apartment</option>
-                              <option>Office</option>
-                              <option>Commercial Unit</option>
-                              <option>Other</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">urgency</label>
-                            <select required name="urgency" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select urgency...</option>
-                              <option>Emergency (Same day)</option>
-                              <option>Priority (1-3 days)</option>
-                              <option>Standard (This week)</option>
-                              <option>Flexible (Any suitable date)</option>
-                            </select>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">estimatedBudget</label>
-                            <select required name="estimatedBudget" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                              <option value="">Select budget range...</option>
-                              <option>Under GBP 200</option>
-                              <option>GBP 200 - GBP 500</option>
-                              <option>GBP 500 - GBP 1,000</option>
-                              <option>GBP 1,000+</option>
-                              <option>Need guidance before deciding</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">accessDetails</label>
-                            <input required name="accessDetails" type="text" placeholder="accessDetails" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">parkingInfo</label>
-                            <input required name="parkingInfo" type="text" placeholder="parkingInfo" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700" />
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">materialsSupplied</label>
-                          <select required name="materialsSupplied" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 appearance-none cursor-pointer">
-                            <option value="">Choose an option...</option>
-                            <option>Yes, all materials ready on site</option>
-                            <option>Partially, need help sourcing remaining items</option>
-                            <option>No, please include materials in the quote</option>
+                {/* Section: Service Details */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Service details</h2>
+                  <p className="text-sm text-slate-400 mb-6">Tell us what you need done and when.</p>
+                  <div className="space-y-5">
+                    <div>
+                      <label className={labelCls}>Service required</label>
+                      <div className="relative">
+                        <select required name="serviceRequired" className={selectCls}>
+                          <option value="">Select a service...</option>
+                          <option>Fencing Installation</option>
+                          <option>Painting &amp; Decorating</option>
+                          <option>Mirror &amp; TV Mounting</option>
+                          <option>General Handyman Services</option>
+                          <option>Property Maintenance</option>
+                          <option>Carpet Cleaning</option>
+                          <option>Domestic Cleaning</option>
+                          <option>Industrial Cleaning</option>
+                          <option>Office Cleaning</option>
+                          <option>Patio Cleaning</option>
+                          <option>Driveway Cleaning</option>
+                          <option>Other / Multiple Services</option>
+                        </select>
+                        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Preferred date</label>
+                        <input required name="preferredDate" type="date" className={inputCls} />
+                      </div>
+                      <div>
+                        <label className={labelCls}>Preferred time</label>
+                        <div className="relative">
+                          <select required name="preferredTime" className={selectCls}>
+                            <option value="">Select a window...</option>
+                            <option>08:00 - 10:00</option>
+                            <option>10:00 - 12:00</option>
+                            <option>12:00 - 14:00</option>
+                            <option>14:00 - 16:00</option>
+                            <option>16:00 - 18:00</option>
+                            <option>Flexible</option>
                           </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
                         </div>
-                        <div className="space-y-3">
-                          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-1">addOns</p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-bold text-slate-600">
-                            <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                              <input name="addOns" value="Waste Removal" type="checkbox" className="accent-krb-blue" />
-                              Waste Removal
-                            </label>
-                            <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                              <input name="addOns" value="Aftercare Plan" type="checkbox" className="accent-krb-blue" />
-                              Aftercare Plan
-                            </label>
-                            <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                              <input name="addOns" value="Before/After Photo Report" type="checkbox" className="accent-krb-blue" />
-                              Before/After Photo Report
-                            </label>
-                            <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl">
-                              <input name="addOns" value="Out of Hours Appointment" type="checkbox" className="accent-krb-blue" />
-                              Out of Hours Appointment
-                            </label>
-                          </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Urgency</label>
+                        <div className="relative">
+                          <select required name="urgency" className={selectCls}>
+                            <option value="">Select urgency...</option>
+                            <option>Emergency (Same day)</option>
+                            <option>Priority (1-3 days)</option>
+                            <option>Standard (This week)</option>
+                            <option>Flexible (Any suitable date)</option>
+                          </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
                         </div>
-                        <label className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-xl text-sm font-bold text-slate-600">
-                          <input name="petsOnSite" type="checkbox" className="accent-krb-blue" />
-petsOnSite
-                        </label>
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">workDescription</label>
-                          <textarea required name="workDescription" placeholder="workDescription" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-40 sm:h-48 resize-none"></textarea>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Estimated budget</label>
+                        <div className="relative">
+                          <select required name="estimatedBudget" className={selectCls}>
+                            <option value="">Select a range...</option>
+                            <option>Under £200</option>
+                            <option>£200 - £500</option>
+                            <option>£500 - £1,000</option>
+                            <option>£1,000+</option>
+                            <option>Need guidance before deciding</option>
+                          </select>
+                          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
                         </div>
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-krb-purple/40 ml-6">preferredOutcome</label>
-                          <textarea required name="preferredOutcome" placeholder="preferredOutcome" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-5 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 h-32 resize-none"></textarea>
-                        </div>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          <button 
-                            type="button"
-                            onClick={() => setStep(1)}
-                            className="btn-secondary flex-1 py-4 text-sm"
-                          >
-                            Back
-                          </button>
-                          <motion.button 
-                            type="submit"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            disabled={isSubmitting}
-                            className="btn-primary flex-[2] py-4 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
-                          >
-                            {isSubmitting ? 'Sending Request...' : 'Send Booking Request'} <Send size={20} />
-                          </motion.button>
-                        </div>
-                        {submitError && (
-                          <p className="text-sm text-red-600 font-bold leading-relaxed bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-                            {submitError}
-                          </p>
-                        )}
-                        <p className="text-sm text-slate-500 font-bold leading-relaxed">
-                          After submission, you will receive an instant email acknowledgment and our team will also receive your full booking brief.
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </form>
-              </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section: Location */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Location</h2>
+                  <p className="text-sm text-slate-400 mb-6">Where will the work take place?</p>
+                  <div className="space-y-5">
+                    <div>
+                      <label className={labelCls}>Service address</label>
+                      <input required name="serviceAddress" autoComplete="street-address" type="text" placeholder="e.g. 14 High Street" className={inputCls} />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Town / City</label>
+                        <input required name="townCity" autoComplete="address-level2" type="text" placeholder="e.g. London" className={inputCls} />
+                      </div>
+                      <div>
+                        <label className={labelCls}>Postcode</label>
+                        <input required name="postcode" autoComplete="postal-code" type="text" placeholder="e.g. SW1A 1AA" className={inputCls} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section: Site Access */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Site access</h2>
+                  <p className="text-sm text-slate-400 mb-6">Help us plan the visit with no surprises.</p>
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Access details</label>
+                        <input required name="accessDetails" type="text" placeholder="e.g. Key with neighbour, entry code" className={inputCls} />
+                      </div>
+                      <div>
+                        <label className={labelCls}>Parking info</label>
+                        <input required name="parkingInfo" type="text" placeholder="e.g. Free street parking outside" className={inputCls} />
+                      </div>
+                    </div>
+                    <div>
+                      <label className={labelCls}>Materials supplied</label>
+                      <div className="relative">
+                        <select required name="materialsSupplied" className={selectCls}>
+                          <option value="">Choose an option...</option>
+                          <option>Yes, all materials ready on site</option>
+                          <option>Partially, need help sourcing remaining items</option>
+                          <option>No, please include materials in the quote</option>
+                        </select>
+                        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                      </div>
+                    </div>
+                    <label className="flex items-center gap-3 text-sm font-semibold text-slate-600 cursor-pointer select-none">
+                      <input name="petsOnSite" type="checkbox" className="w-4 h-4 accent-krb-blue" />
+                      Pets on site
+                    </label>
+                  </div>
+                </div>
+
+                {/* Section: Add-ons */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Add-ons</h2>
+                  <p className="text-sm text-slate-400 mb-6">Optional extras you'd like included in the quote.</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {['Waste Removal', 'Aftercare Plan', 'Before/After Photo Report', 'Out of Hours Appointment'].map((addon) => (
+                      <label key={addon} className="flex items-center gap-3 border border-slate-200 rounded-lg px-4 py-3 text-sm font-semibold text-slate-600 cursor-pointer hover:border-krb-blue/40 hover:bg-slate-50 transition-all">
+                        <input name="addOns" value={addon} type="checkbox" className="w-4 h-4 accent-krb-blue" />
+                        {addon}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Section: Requirements */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Your requirements</h2>
+                  <p className="text-sm text-slate-400 mb-6">The more detail here, the more accurate the quote.</p>
+                  <div className="space-y-5">
+                    <div>
+                      <label className={labelCls}>Work description</label>
+                      <textarea required name="workDescription" placeholder="Describe the work needed, scope, materials, or anything else relevant..." className={`${inputCls} h-36 resize-none`}></textarea>
+                    </div>
+                    <div>
+                      <label className={labelCls}>Preferred outcome</label>
+                      <textarea required name="preferredOutcome" placeholder="What does a successful job look like to you?" className={`${inputCls} h-28 resize-none`}></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section: Your Details */}
+                <div className="py-10">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Your details</h2>
+                  <p className="text-sm text-slate-400 mb-6">By completing this form your details are shared with our team for providing a quote, but absolutely no one else.</p>
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Full name</label>
+                        <input required name="fullName" autoComplete="name" type="text" placeholder="Full name" className={inputCls} />
+                      </div>
+                      <div>
+                        <label className={labelCls}>Company name <span className="text-slate-300 font-normal">(optional)</span></label>
+                        <input name="companyName" autoComplete="organization" type="text" placeholder="Company name" className={inputCls} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelCls}>Email address</label>
+                        <input required name="email" autoComplete="email" type="email" placeholder="you@example.com" className={inputCls} />
+                      </div>
+                      <div>
+                        <label className={labelCls}>Phone number</label>
+                        <input required name="phone" autoComplete="tel" type="tel" placeholder="+44 07xxx xxxxxx" className={inputCls} />
+                      </div>
+                    </div>
+                    <div>
+                      <label className={labelCls}>Preferred contact method</label>
+                      <div className="relative">
+                        <select required name="preferredContactMethod" className={selectCls}>
+                          <option value="">Select contact preference...</option>
+                          <option>Email</option>
+                          <option>Phone Call</option>
+                          <option>Text Message</option>
+                          <option>Any of the above</option>
+                        </select>
+                        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">▾</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit */}
+                <div className="pt-8">
+                  {submitError && (
+                    <p className="text-sm text-red-600 font-semibold bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5">
+                      {submitError}
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !propertyType}
+                    className="w-full bg-krb-purple text-white font-bold text-sm py-4 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-krb-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Sending Request...' : 'Get Your Quote'}
+                    {!isSubmitting && <ArrowRight size={18} />}
+                  </button>
+                  {!propertyType && (
+                    <p className="text-xs text-slate-400 text-center mt-3">Please select a property type above to continue.</p>
+                  )}
+                </div>
+              </motion.form>
             </div>
 
             {/* Info Side */}
             <div className="lg:col-span-4">
-              <div className="sticky top-24 space-y-10">
-                <motion.div {...fadeIn}>
-                  <span className="section-subtitle">Process</span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-krb-purple mb-6 leading-tight">What Happens Next?</h3>
-                  <div className="space-y-7">
+              <div className="sticky top-24 space-y-8">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7 }}
+                >
+                  <h3 className="text-lg font-bold text-slate-900 mb-5">What happens next?</h3>
+                  <div className="space-y-6">
                     {[
                       { step: '01', title: 'Detailed Review', desc: 'We assess your full service brief, access notes, timing, and budget expectations.' },
-                      { step: '02', title: 'Quote + Scheduling', desc: 'You receive an email with availability, price clarity, and any practical recommendations.' },
-                      { step: '03', title: 'Delivery Plan', desc: 'After approval, we schedule your slot and send prep notes so your appointment runs smoothly.' }
+                      { step: '02', title: 'Quote & Scheduling', desc: 'You receive an email with availability, price clarity, and any practical recommendations.' },
+                      { step: '03', title: 'Delivery Plan', desc: 'After approval, we schedule your slot and send prep notes so your appointment runs smoothly.' },
                     ].map((item, i) => (
-                      <motion.div 
-                        key={i} 
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex gap-5 group"
-                      >
-                        <div className="text-4xl font-black text-krb-blue/10 shrink-0 group-hover:text-krb-blue/30 transition-colors">{item.step}</div>
+                      <div key={i} className="flex gap-4">
+                        <span className="text-3xl font-black text-krb-blue/15 shrink-0 leading-none">{item.step}</span>
                         <div>
-                          <h4 className="text-lg font-black text-krb-purple mb-1">{item.title}</h4>
-                          <p className="text-sm text-slate-500 leading-relaxed font-bold">{item.desc}</p>
+                          <p className="font-bold text-slate-800 text-sm mb-1">{item.title}</p>
+                          <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </motion.div>
 
-                <motion.div {...fadeIn} className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                  <h4 className="text-lg font-black text-krb-purple mb-4">How To Get The Fastest Accurate Quote</h4>
-                  <ul className="space-y-3 text-sm text-slate-600 font-bold leading-relaxed">
-                    <li className="flex gap-2"><ArrowRight size={16} className="text-krb-blue mt-1 shrink-0" />Include measurements, material preferences, and any known structural issues.</li>
-                    <li className="flex gap-2"><ArrowRight size={16} className="text-krb-blue mt-1 shrink-0" />Mention access limits like narrow entries, stairs, parking permits, or gated areas.</li>
-                    <li className="flex gap-2"><ArrowRight size={16} className="text-krb-blue mt-1 shrink-0" />Share your preferred outcome so we can align quality, speed, and budget from day one.</li>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                  className="bg-slate-50 border border-slate-200 rounded-2xl p-6"
+                >
+                  <h4 className="font-bold text-slate-900 mb-4 text-sm">Tips for a faster quote</h4>
+                  <ul className="space-y-3 text-sm text-slate-500 leading-relaxed">
+                    <li className="flex gap-2"><ArrowRight size={14} className="text-krb-blue mt-0.5 shrink-0" />Include measurements, material preferences, and known access issues.</li>
+                    <li className="flex gap-2"><ArrowRight size={14} className="text-krb-blue mt-0.5 shrink-0" />Mention parking limits, narrow entries, or gated areas.</li>
+                    <li className="flex gap-2"><ArrowRight size={14} className="text-krb-blue mt-0.5 shrink-0" />Share your preferred outcome so we can align quality, speed, and budget.</li>
                   </ul>
                 </motion.div>
 
-                <motion.div {...fadeIn} className="bg-krb-dark text-white rounded-2xl p-6">
-                  <h4 className="text-lg font-black mb-4">What You Can Expect From KRB</h4>
-                  <ul className="space-y-3 text-sm text-white/80 font-bold leading-relaxed">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  className="bg-krb-dark text-white rounded-2xl p-6"
+                >
+                  <h4 className="font-bold mb-4 text-sm">What to expect from KRB</h4>
+                  <ul className="space-y-2.5 text-sm text-white/70 leading-relaxed">
                     <li>Clear communication before and during your booking.</li>
-                    <li>Practical scheduling windows with realistic arrival times.</li>
-                    <li>Transparent pricing and clear scope before work starts.</li>
-                    <li>Professional standards across domestic and commercial jobs.</li>
+                    <li>Realistic arrival windows and scheduling.</li>
+                    <li>Transparent pricing before work starts.</li>
+                    <li>Professional standards on every job.</li>
                   </ul>
                 </motion.div>
-
               </div>
             </div>
+
           </div>
         </div>
       </section>

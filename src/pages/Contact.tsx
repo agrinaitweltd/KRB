@@ -1,10 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Globe, Clock, Send, Shield, ThumbsUp, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import ImageShowcase from '../components/ImageShowcase';
 import { contactImageSlots } from '../data/siteImageSlots';
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitError('');
+    setSubmitSuccess('');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      fullName: String(formData.get('fullName') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      serviceType: String(formData.get('serviceType') || '').trim(),
+      message: String(formData.get('message') || '').trim(),
+    };
+
+    try {
+      setIsSubmitting(true);
+      const response = await fetch('/api/contact-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.message || 'Unable to send your message right now.');
+      }
+
+      form.reset();
+      setSubmitSuccess('Thanks, your message has been sent. We will get back to you shortly.');
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to send your message right now.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -131,19 +175,25 @@ const Contact = () => {
               >
                 <div className="absolute top-0 right-0 w-48 h-48 bg-krb-blue/5 rounded-full -mr-24 -mt-24"></div>
                 <h3 className="text-2xl lg:text-3xl font-bold text-krb-purple mb-10 relative z-10">Send a Message</h3>
-                <form className="space-y-8 relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Full Name</label>
                       <input 
+                        name="fullName"
+                        required
                         type="text" 
+                        placeholder="Your full name"
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Email Address</label>
                       <input 
+                        name="email"
+                        required
                         type="email" 
+                        placeholder="you@example.com"
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
                       />
                     </div>
@@ -152,14 +202,17 @@ const Contact = () => {
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Phone Number</label>
                       <input 
+                        name="phone"
+                        required
                         type="tel" 
+                        placeholder="07xxx xxxxxx"
                         className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm" 
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Service Type</label>
                       <div className="relative">
-                        <select className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
+                        <select name="serviceType" required className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm appearance-none cursor-pointer">
                           <option>General Enquiry</option>
                           <option>Fencing</option>
                           <option>Painting</option>
@@ -176,16 +229,31 @@ const Contact = () => {
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-krb-purple/40 ml-4">Your Message</label>
                     <textarea 
+                      name="message"
+                      required
+                      placeholder="Tell us how we can help and any preferred timelines."
                       className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-6 focus:bg-white focus:border-krb-blue focus:ring-0 transition-all outline-none font-bold text-slate-700 text-sm h-40 resize-none" 
                     ></textarea>
                   </div>
                   <motion.button 
+                    type="submit"
+                    disabled={isSubmitting}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="btn-primary w-full py-5 text-sm"
+                    className="btn-primary w-full py-5 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    Send Message <Send size={18} />
+                    {isSubmitting ? 'Sending Message...' : 'Send Message'} <Send size={18} />
                   </motion.button>
+                  {submitSuccess && (
+                    <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-3 font-bold">
+                      {submitSuccess}
+                    </p>
+                  )}
+                  {submitError && (
+                    <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3 font-bold">
+                      {submitError}
+                    </p>
+                  )}
                 </form>
               </motion.div>
             </div>

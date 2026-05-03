@@ -131,25 +131,74 @@ export default async function handler(req, res) {
   const resend = new Resend(resendApiKey);
   const detailsTable = buildEmailTable(payload);
 
-  const customerHtml = `
-    <div style="font-family:Arial, sans-serif; color:#1e293b; line-height:1.6;">
-      <h2 style="color:#0e4c78; margin-bottom:8px;">Booking Request Received</h2>
-      <p>Hi ${escapeHtml(payload.fullName)},</p>
-      <p>Thanks for booking with KRB Facilities Management. We have received your request and our team will review it shortly.</p>
-      <p>Here is a summary of what you sent:</p>
-      ${detailsTable}
-      <p style="margin-top:18px;">We will reply with availability and pricing as soon as possible.</p>
-      <p>Kind regards,<br />KRB Facilities Management</p>
-    </div>
-  `;
+  const emailShell = (preheader, bodyContent) => `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${escapeHtml(preheader)}</title>
+</head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px;">
+    <tr><td align="center">
+      <table cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+        <!-- Header -->
+        <tr>
+          <td style="background:#07273f;padding:28px 36px;">
+            <table cellpadding="0" cellspacing="0"><tr>
+              <td style="vertical-align:middle;">
+                <span style="font-size:28px;font-weight:900;color:#59b947;letter-spacing:-1px;font-family:Arial,sans-serif;">KRB</span>
+                <span style="font-size:11px;font-weight:700;color:#ffffff;margin-left:10px;letter-spacing:0.18em;text-transform:uppercase;font-family:Arial,sans-serif;">Facilities Management</span>
+              </td>
+            </tr></table>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.45);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-family:Arial,sans-serif;">${escapeHtml(preheader)}</p>
+          </td>
+        </tr>
+        <!-- Body -->
+        <tr>
+          <td style="padding:36px 36px 28px;">
+            ${bodyContent}
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f8fafc;border-top:2px solid #e2e8f0;padding:22px 36px;">
+            <p style="margin:0;font-size:12px;color:#94a3b8;line-height:2;font-family:Arial,sans-serif;">
+              KRB Facilities Management &nbsp;&bull;&nbsp;
+              <a href="https://krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">krbfm.co.uk</a>
+              &nbsp;&bull;&nbsp;
+              <a href="tel:03335772280" style="color:#1b9ce5;text-decoration:none;">0333 577 2280</a>
+              &nbsp;&bull;&nbsp;
+              <a href="mailto:info@krbfm.co.uk" style="color:#1b9ce5;text-decoration:none;">info@krbfm.co.uk</a>
+            </p>
+            <p style="margin:4px 0 0;font-size:11px;color:#cbd5e1;font-family:Arial,sans-serif;">Serving Croydon, Purley, Thornton Heath, Coulsdon &amp; South London</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
 
-  const adminHtml = `
-    <div style="font-family:Arial, sans-serif; color:#1e293b; line-height:1.6;">
-      <h2 style="color:#0e4c78; margin-bottom:8px;">New Booking Request</h2>
-      <p>A customer has submitted a new booking request via krbfm.co.uk.</p>
-      ${detailsTable}
-    </div>
-  `;
+  const customerHtml = emailShell(
+    'Booking Request Received',
+    `<h2 style="margin:0 0 16px;font-size:22px;font-weight:900;color:#07273f;font-family:Arial,sans-serif;">Your booking request has been received</h2>
+     <p style="margin:0 0 10px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Hi ${escapeHtml(payload.fullName)},</p>
+     <p style="margin:0 0 10px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Thanks for choosing <strong>KRB Facilities Management</strong>. We've received your booking request and our team will review it shortly &mdash; we'll reply with availability and pricing as soon as possible.</p>
+     <p style="margin:0 0 20px;font-size:15px;color:#334155;font-family:Arial,sans-serif;">Here's a summary of what you submitted:</p>
+     ${detailsTable}
+     <p style="margin:24px 0 0;font-size:14px;color:#64748b;font-family:Arial,sans-serif;">Kind regards,<br /><strong style="color:#07273f;">The KRB Team</strong></p>`
+  );
+
+  const adminHtml = emailShell(
+    'New Booking Request',
+    `<h2 style="margin:0 0 6px;font-size:22px;font-weight:900;color:#07273f;font-family:Arial,sans-serif;">New Booking Request</h2>
+     <p style="margin:0 0 20px;font-size:14px;color:#64748b;font-family:Arial,sans-serif;">Submitted via krbfm.co.uk</p>
+     <div style="background:#fff7ed;border-left:4px solid #59b947;border-radius:4px;padding:14px 16px;margin-bottom:24px;">
+       <p style="margin:0;font-size:14px;color:#334155;font-family:Arial,sans-serif;"><strong>From:</strong> ${escapeHtml(payload.fullName)} &mdash; <a href="mailto:${escapeHtml(payload.email)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.email)}</a> &mdash; <a href="tel:${escapeHtml(payload.phone)}" style="color:#1b9ce5;text-decoration:none;">${escapeHtml(payload.phone)}</a></p>
+       <p style="margin:6px 0 0;font-size:14px;color:#334155;font-family:Arial,sans-serif;"><strong>Service:</strong> ${escapeHtml(payload.serviceRequired)} &mdash; <strong>Date:</strong> ${escapeHtml(payload.preferredDate)} &mdash; <strong>Urgency:</strong> ${escapeHtml(payload.urgency)}</p>
+     </div>
+     ${detailsTable}`
+  );
 
   try {
     await Promise.all([

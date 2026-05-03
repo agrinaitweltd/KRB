@@ -20,13 +20,12 @@ const selectCls = `${inputCls} appearance-none cursor-pointer`;
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [submitSuccess, setSubmitSuccess] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   const [propertyType, setPropertyType] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitError('');
-    setSubmitSuccess('');
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -72,7 +71,7 @@ const Contact = () => {
 
       form.reset();
       setPropertyType('');
-      setSubmitSuccess('Thanks, your message has been sent. We will get back to you shortly.');
+      setSubmitted(true);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Unable to send your message right now.');
     } finally {
@@ -197,7 +196,29 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div className="lg:col-span-7">
-              <div className="lg:col-span-7">
+              {submitted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center text-center py-20 px-8 bg-white rounded-2xl border border-slate-100 shadow-sm"
+                >
+                  <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 size={44} />
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-900 mb-3">Message Received!</h3>
+                  <p className="text-slate-500 leading-relaxed mb-2 max-w-md">
+                    Thanks for reaching out. Your message has been sent to our team and a confirmation email is on its way to your inbox.
+                  </p>
+                  <p className="text-slate-400 text-sm mb-8">We aim to reply within a few hours during working hours (Mon–Sat, 8am–6pm).</p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="btn-primary"
+                  >
+                    Send Another Message
+                  </button>
+                </motion.div>
+              ) : (
+              <div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-1">Send a Message</h3>
                 <p className="text-sm text-slate-400 mb-8">Fill in as much detail as possible so we can give you the most accurate response.</p>
                 <form onSubmit={handleSubmit} className="divide-y divide-slate-100">
@@ -433,11 +454,6 @@ const Contact = () => {
 
                   {/* Submit */}
                   <div className="pt-6">
-                    {submitSuccess && (
-                      <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3 font-semibold mb-4">
-                        {submitSuccess}
-                      </p>
-                    )}
                     {submitError && (
                       <p className="text-sm text-red-600 font-semibold bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
                         {submitError}
@@ -457,6 +473,7 @@ const Contact = () => {
                   </div>
                 </form>
               </div>
+              )}
             </div>
           </div>
         </div>

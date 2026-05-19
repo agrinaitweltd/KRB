@@ -348,7 +348,7 @@ const ServiceDetail = () => {
               </div>
               
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-10 sm:mb-12">
-                At KRB Facilities Management, we provide expert {service.title.toLowerCase()} services tailored to the specific needs of Croydon homeowners. Our team combines years of experience with high-quality materials to deliver results that exceed expectations.
+                At KRB Facilities Management, we provide expert {service.title.toLowerCase()} services tailored to the specific needs of South London homeowners. Our team combines years of experience with high-quality materials to deliver results that exceed expectations.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-14 sm:mb-20">
@@ -443,7 +443,7 @@ const ServiceDetail = () => {
                     Service Areas
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {['Croydon', 'Purley', 'Thornton Heath', 'Coulsdon', 'Sanderstead'].map((area, i) => (
+                    {['Purley', 'Thornton Heath', 'Coulsdon', 'Sanderstead', 'Norbury'].map((area, i) => (
                       <span key={i} className="bg-white px-4 py-2 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest border border-slate-200">
                         {area}
                       </span>

@@ -78,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
               </Link>
               <p className="text-slate-600 text-base leading-relaxed mb-7 max-w-md mx-auto lg:mx-0">
-                Professional home maintenance and handyman services for residential properties across Croydon and South London. Reliable, affordable, and high-quality.
+                Professional home maintenance and handyman services for residential properties across South London and surrounding areas. Reliable, affordable, and high-quality.
               </p>
               <div className="flex gap-3 justify-center lg:justify-start">
                 {[Facebook, Instagram, Linkedin].map((Icon, i) => (
@@ -106,7 +106,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ul className="space-y-4 text-sm text-slate-600 font-medium">
                 <li className="flex items-start gap-3">
                   <MapPin size={16} className="text-krb-blue mt-1 shrink-0" />
-                  <span className="leading-relaxed">Serving Croydon, Purley, Thornton Heath, Coulsdon & South London</span>
+                  <span className="leading-relaxed">Serving Purley, Thornton Heath, Coulsdon, Norbury & South London</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone size={16} className="text-krb-blue shrink-0" />

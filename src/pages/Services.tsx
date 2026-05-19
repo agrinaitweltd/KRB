@@ -126,7 +126,7 @@ const Services = () => {
               <span className="text-krb-blue">For Your Home.</span>
             </h1>
             <p className="text-lg text-white/60 leading-relaxed max-w-xl">
-              From small repairs to major installations, we provide a full range of home maintenance services across Croydon and South London.
+              From small repairs to major installations, we provide a full range of home maintenance services across South London and surrounding areas.
             </p>
           </motion.div>
         </div>
@@ -261,7 +261,7 @@ const Services = () => {
             <span className="section-subtitle">Get Started</span>
             <h2 className="section-title">Need a Custom Solution?</h2>
             <p className="text-base lg:text-lg text-slate-500 mb-10 max-w-2xl mx-auto">
-              If you don't see the service you need, get in touch. We handle a wide variety of home maintenance and repair tasks across Croydon.
+              If you don't see the service you need, get in touch. We handle a wide variety of home maintenance and repair tasks across South London.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-5">
               <Link to="/quote" className="btn-primary">

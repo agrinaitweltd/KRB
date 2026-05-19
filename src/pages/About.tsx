@@ -78,7 +78,7 @@ const About = () => {
               <span className="text-krb-blue">Living Spaces.</span>
             </h1>
             <p className="text-lg text-white/60 leading-relaxed max-w-xl">
-              Providing reliable, high-quality property maintenance services that homeowners across Croydon and South London can trust.
+              Providing reliable, high-quality property maintenance services that homeowners across South London and surrounding areas can trust.
             </p>
           </motion.div>
         </div>
@@ -93,7 +93,7 @@ const About = () => {
               <h2 className="section-title">Your Local Experts in Home Maintenance</h2>
               <div className="space-y-6 text-base lg:text-lg text-slate-600 leading-relaxed">
                 <p>
-                  KRB Facilities Management Limited provides professional home maintenance and handyman services for residential properties across Croydon and surrounding areas in South London.
+                  KRB Facilities Management Limited provides professional home maintenance and handyman services for residential properties across South London and surrounding areas.
                 </p>
                 <p>
                   With years of experience in the industry, we have built a reputation for excellence, reliability, and exceptional customer service. We understand that your home is your most valuable asset, and we treat every project with the care and respect it deserves.
@@ -253,7 +253,7 @@ const About = () => {
             <div className="relative z-10">
               <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">Ready to Experience <br />the KRB Standard?</h2>
               <p className="text-white/70 text-base lg:text-lg mb-10 max-w-2xl mx-auto">
-                Join hundreds of satisfied homeowners in Croydon. Let us take care of your home maintenance needs today.
+                Join hundreds of satisfied homeowners across South London. Let us take care of your home maintenance needs today.
               </p>
               <div className="flex flex-col sm:flex-row gap-5 justify-center">
                 <Link to="/quote" className="btn-primary !bg-white !text-krb-blue hover:!bg-krb-yellow hover:!text-krb-purple">

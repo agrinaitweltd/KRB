@@ -59,7 +59,7 @@ export const serviceDetailImageSlots: ImageSlot[] = [
 export const serviceAreasImageSlots: ImageSlot[] = [
   {
     src: '/gallery-service-areas-1.png',
-    alt: 'Local property work in Croydon',
+    alt: 'Local property work across South London',
     label: 'Service areas local work image',
   },
 ];

@@ -122,7 +122,7 @@ const Contact = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-lg text-white/60 leading-relaxed max-w-xl"
             >
-              Have a question or want to discuss a project? We're here to help homeowners across Croydon with professional maintenance solutions.
+              Have a question or want to discuss a project? We're here to help homeowners across South London with professional maintenance solutions.
             </motion.p>
           </motion.div>
         </div>
@@ -440,7 +440,7 @@ const Contact = () => {
               {[
                 { icon: Phone, title: 'Call Us', value: '0333 577 2280', value2: '+44 7746 343913', sub: 'Mon – Sat: 8am – 6pm' },
                 { icon: Mail, title: 'Email Us', value: 'info@krbfm.co.uk', sub: 'Reply within a few hours', href: 'mailto:info@krbfm.co.uk' },
-                { icon: MapPin, title: 'Service Area', value: 'Croydon, Purley, Thornton Heath & South London', sub: 'Local Experts' },
+                { icon: MapPin, title: 'Service Area', value: 'Purley, Thornton Heath, Coulsdon & South London', sub: 'Local Experts' },
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -500,7 +500,7 @@ const Contact = () => {
             style={{ border: 0, filter: 'grayscale(1) contrast(1.1) opacity(0.7)' }} 
             allowFullScreen 
             loading="lazy"
-            title="Croydon Map"
+            title="South London Map"
           ></iframe>
         </div>
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center p-6">
@@ -513,8 +513,8 @@ const Contact = () => {
             <div className="w-16 h-16 bg-krb-purple text-krb-yellow rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
               <MapPin size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-krb-purple mb-3">Based in Croydon</h3>
-            <p className="text-slate-500 font-bold text-xs mb-6 leading-relaxed">Serving all of Croydon and the surrounding South London areas.</p>
+            <h3 className="text-2xl font-bold text-krb-purple mb-3">Based in South London</h3>
+            <p className="text-slate-500 font-bold text-xs mb-6 leading-relaxed">Serving Purley, Thornton Heath, Coulsdon, Norbury and all surrounding South London areas.</p>
             <a 
               href="https://maps.google.com" 
               target="_blank" 

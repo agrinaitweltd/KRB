@@ -463,7 +463,7 @@ const Home = () => {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <motion.div {...fadeIn}>
               <span className="section-subtitle">Where We Work</span>
-              <h2 className="section-title">Serving Croydon & <br />South London</h2>
+              <h2 className="section-title">Serving South London <br />& Surrounding Areas</h2>
               <p className="text-slate-600 text-base lg:text-lg leading-relaxed">
                 We provide expert home maintenance services across a wide range of locations in South London.
               </p>
@@ -471,7 +471,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
-            {['Croydon', 'Purley', 'Thornton Heath', 'Coulsdon', 'Sanderstead', 'Addiscombe', 'Shirley', 'Selhurst', 'Norbury', 'South Norwood'].map((area, i) => (
+            {['Purley', 'Thornton Heath', 'Coulsdon', 'Sanderstead', 'Addiscombe', 'Shirley', 'Selhurst', 'Norbury', 'South Norwood', 'Streatham'].map((area, i) => (
               <motion.div
                 key={area}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -512,7 +512,7 @@ const Home = () => {
                 {
                   stat: '250+ homes',
                   label: 'customers',
-                  text: 'Trusted by homeowners, landlords, and local businesses across Croydon and South London.',
+                  text: 'Trusted by homeowners, landlords, and local businesses across South London and surrounding areas.',
                 },
                 {
                   stat: '5+ years',
@@ -544,7 +544,7 @@ const Home = () => {
       <ImageShowcase
         eyebrow="Recent Projects"
         title="Work Completed By KRB"
-        description="A quick look at completed jobs that show the quality, finish, and range of work we deliver across Croydon and South London."
+        description="A quick look at completed jobs that show the quality, finish, and range of work we deliver across South London and surrounding areas."
         items={homeImageSlots}
       />
     </div>

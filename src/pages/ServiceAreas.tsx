@@ -7,7 +7,7 @@ import { serviceAreasImageSlots } from '../data/siteImageSlots';
 
 const ServiceAreas = () => {
   const areas = [
-    { name: 'Croydon', desc: 'Our primary service location. We provide full property maintenance across all Croydon postcodes including CR0, CR2, CR7, and CR8.' },
+    { name: 'Addiscombe', desc: 'Reliable home maintenance, repairs, and improvement services for residents across Addiscombe and the CR0 area.' },
     { name: 'Purley', desc: 'Expert handyman and fencing services for residential properties in Purley and the CR8 area.' },
     { name: 'Thornton Heath', desc: 'Reliable home repairs and decorating services for Thornton Heath homeowners in the CR7 postcode.' },
     { name: 'Coulsdon', desc: 'Professional property maintenance and mounting services in the Coulsdon and CR5 area.' },
@@ -48,7 +48,7 @@ const ServiceAreas = () => {
               <span className="text-krb-blue">Areas.</span>
             </h1>
             <p className="text-lg text-white/60 leading-relaxed max-w-xl">
-              KRB Facilities Management Limited proudly serves homeowners across Croydon and the surrounding South London areas.
+              KRB Facilities Management Limited proudly serves homeowners across South London and all surrounding areas.
             </p>
           </motion.div>
         </div>
@@ -63,20 +63,20 @@ const ServiceAreas = () => {
                 <MapPin size={28} />
               </div>
               <span className="section-subtitle">Local Expertise</span>
-              <h2 className="section-title">Serving Our Local <br />Croydon Community</h2>
+              <h2 className="section-title">Serving Our Local <br />South London Community</h2>
               <div className="space-y-6 text-base lg:text-lg text-slate-600 leading-relaxed mb-10">
                 <p>
-                  Being based in <strong>Croydon</strong>, we have a deep understanding of the local area and the specific needs of homeowners in our community. We pride ourselves on being a local business that you can rely on for all your home maintenance needs.
+                  Being based in <strong>South London</strong>, we have a deep understanding of the local area and the specific needs of homeowners in our community. We pride ourselves on being a local business that you can rely on for all your home maintenance needs.
                 </p>
                 <p>
-                  Whether you are in the heart of <strong>Croydon</strong> or in one of the surrounding towns, we are committed to providing the same high level of professional service and attention to detail.
+                  Whether you are in Purley, Thornton Heath, Norbury, or any of the surrounding areas, we are committed to providing the same high level of professional service and attention to detail.
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
                   'Prompt & Reliable Local Service',
                   'Knowledge of Local Property Styles',
-                  'No Call-Out Fees for Croydon Areas',
+                  'No Call-Out Fees Across All Areas',
                   'Fully Insured Local Professionals'
                 ].map((item, i) => (
                   <motion.div 
@@ -124,7 +124,7 @@ const ServiceAreas = () => {
               <span className="text-krb-yellow font-bold text-[10px] uppercase tracking-[0.3em] mb-6 block">Why Choose KRB</span>
               <h2 className="text-3xl lg:text-5xl font-bold mb-8 leading-tight">Your Trusted Local Partner</h2>
               <p className="text-base text-white/60 mb-12 leading-relaxed max-w-2xl mx-auto">
-                We are proud to be the first choice for property maintenance in <strong>Croydon</strong> and the surrounding South London areas. Our reputation is built on quality workmanship and honest pricing.
+                We are proud to be the first choice for property maintenance across South London and surrounding areas. Our reputation is built on quality workmanship and honest pricing.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 <motion.div whileHover={{ y: -5 }} className="flex flex-col items-center group">
@@ -158,7 +158,7 @@ const ServiceAreas = () => {
             <span className="section-subtitle">Get Started</span>
             <h2 className="section-title">Ready to Start Your Project?</h2>
             <p className="text-base lg:text-lg text-slate-500 mb-10 max-w-2xl mx-auto">
-              Join our list of happy customers in Croydon. Get in touch today for a free, no-obligation quote for your home maintenance needs.
+              Join our list of happy customers across South London. Get in touch today for a free, no-obligation quote for your home maintenance needs.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-5">
               <Link to="/quote" className="btn-primary">
@@ -176,7 +176,7 @@ const ServiceAreas = () => {
       <ImageShowcase
         eyebrow="Local Projects"
         title="Work Across Our Coverage Area"
-        description="Recent projects completed in Croydon and nearby South London locations where our team regularly works."
+        description="Recent projects completed across South London and surrounding areas where our team regularly works."
         items={serviceAreasImageSlots}
         compact
       />

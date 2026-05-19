@@ -303,7 +303,7 @@ const ServiceDetail = () => {
           <img 
             src={service.heroImage} 
             alt={service.title} 
-            className="w-full h-full object-contain md:object-cover bg-slate-200"
+            className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             decoding="async"
             onError={(e) => {

@@ -147,11 +147,11 @@ const Services = () => {
                 className="group"
               >
                 <div className="card-modern h-full flex flex-col p-0 overflow-hidden">
-                  <div className="h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden relative bg-slate-100">
+                  <div className="h-52 sm:h-60 md:h-64 lg:h-72 overflow-hidden relative bg-slate-200">
                     <img 
                       src={service.image} 
                       alt={service.title} 
-                      className="w-full h-full object-contain bg-slate-100 p-2 sm:p-3 group-hover:scale-[1.02] transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
                       referrerPolicy="no-referrer"
                       loading="lazy"
                       decoding="async"

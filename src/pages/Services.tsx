@@ -84,7 +84,7 @@ const Services = () => {
       title: 'Garage Clean-Ups',
       description: 'Full garage clearing and cleaning service — we remove unwanted items, sweep out years of clutter, and even buy out items you no longer need, leaving your garage fresh, organised, and ready to use.',
       icon: Trash2,
-      image: '/garage-cleanup-main.png',
+      image: '/garage-cleanup-card.png',
       color: 'bg-orange-50 text-orange-600'
     }
   ];

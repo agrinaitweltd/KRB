@@ -266,7 +266,7 @@ const serviceData: Record<string, any> = {
   },
   'garage-clean-ups': {
     title: 'Garage Clean-Ups',
-    heroImage: '/garage-cleanup-main.png',
+    heroImage: '/garage-cleanup-banner.png',
     description: 'Full garage clearing and cleaning service — we remove unwanted items, dispose of waste responsibly, and even buy out items you no longer need. Leave the hard work to us and get your garage back.',
     benefits: [
       'Reclaim your garage space quickly',

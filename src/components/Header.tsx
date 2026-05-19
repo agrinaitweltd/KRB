@@ -253,12 +253,7 @@ const Header: React.FC = () => {
                         <div className="grid gap-1">
                           {link.dropdown.map((sub) => (
                             sub.children ? (
-                              <div
-                                key={sub.name}
-                                className="relative"
-                                onMouseEnter={() => setIsCleaningOpen(true)}
-                                onMouseLeave={() => setIsCleaningOpen(false)}
-                              >
+                              <div key={sub.name}>
                                 <button
                                   type="button"
                                   className={`w-full px-4 py-3 rounded-xl text-[13px] font-semibold transition-all flex items-center justify-between ${
@@ -269,30 +264,29 @@ const Header: React.FC = () => {
                                   onClick={() => setIsCleaningOpen((open) => !open)}
                                 >
                                   {sub.name}
-                                  <ChevronRight size={14} className={`transition-transform ${isCleaningOpen ? 'translate-x-0.5' : ''}`} />
+                                  <ChevronDown size={13} className={`transition-transform duration-200 ${isCleaningOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 <AnimatePresence>
                                   {isCleaningOpen && (
                                     <motion.div
-                                      initial={{ opacity: 0, x: 8, scale: 0.98 }}
-                                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                                      exit={{ opacity: 0, x: 8, scale: 0.98 }}
-                                      className="absolute top-0 left-full z-30"
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: 'auto' }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                                      className="overflow-hidden"
                                     >
-                                      <div className="w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3">
-                                        <div className="flex flex-col gap-1">
-                                          {sub.children.map((child) => (
-                                            <Link
-                                              key={child.name}
-                                              to={child.path}
-                                              className="w-full px-4 py-3 rounded-xl text-[13px] font-semibold transition-all flex items-center justify-between group/sub text-slate-600 hover:bg-[#59b947] hover:text-white active:bg-[#59b947] active:text-white"
-                                            >
-                                              {child.name}
-                                              <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all" />
-                                            </Link>
-                                          ))}
-                                        </div>
+                                      <div className="flex flex-col gap-1 pl-3 pt-1 pb-1">
+                                        {sub.children.map((child) => (
+                                          <Link
+                                            key={child.name}
+                                            to={child.path}
+                                            className="w-full px-4 py-2.5 rounded-xl text-[12px] font-semibold transition-all flex items-center justify-between group/sub text-slate-500 hover:bg-[#59b947] hover:text-white active:bg-[#59b947] active:text-white"
+                                          >
+                                            {child.name}
+                                            <ChevronRight size={13} className="opacity-0 -translate-x-2 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all" />
+                                          </Link>
+                                        ))}
                                       </div>
                                     </motion.div>
                                   )}

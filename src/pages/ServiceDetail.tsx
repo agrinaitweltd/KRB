@@ -225,7 +225,7 @@ const serviceData: Record<string, any> = {
   },
   'driveway-cleaning': {
     title: 'Driveway Cleaning',
-    heroImage: '/fencing-wide.png',
+    heroImage: '/driveway-cleaning-banner.png',
     description: 'Driveway cleaning for block paving, concrete, and tarmac to remove staining, weeds, and buildup for a cleaner exterior finish.',
     benefits: [
       'Improved kerb appeal',

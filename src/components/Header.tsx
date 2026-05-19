@@ -59,6 +59,7 @@ const Header: React.FC = () => {
     { name: 'Driveway Cleaning', path: '/services/driveway-cleaning' },
     { name: 'General Repairs', path: '/services/repairs' },
     { name: 'Security Services', path: '/services/security-services' },
+    { name: 'Garage Clean-Ups', path: '/services/garage-clean-ups' },
   ];
 
   const filteredServices = searchQuery.trim()

@@ -15,7 +15,8 @@ import {
   Tv,
   Hammer,
   Home as HomeIcon,
-  ShieldCheck
+  ShieldCheck,
+  Trash2
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ImageShowcase from '../components/ImageShowcase';
@@ -262,6 +263,26 @@ const serviceData: Record<string, any> = {
       'Static Security Guards across London'
     ],
     icon: <ShieldCheck size={48} />
+  },
+  'garage-clean-ups': {
+    title: 'Garage Clean-Ups',
+    heroImage: '/garage-cleanup-main.png',
+    description: 'Full garage clearing and cleaning service — we remove unwanted items, dispose of waste responsibly, and leave your garage swept clean and ready to use again.',
+    benefits: [
+      'Reclaim your garage space quickly',
+      'Responsible disposal and recycling of items',
+      'Thorough sweep-down and clean after clearance',
+      'No heavy lifting required from you',
+      'Same-day or next-day availability'
+    ],
+    types: [
+      'Full Garage Clearance',
+      'Partial Junk & Rubbish Removal',
+      'Old Appliance & Furniture Removal',
+      'Post-Clearance Sweep & Clean',
+      'Recycling & Responsible Disposal'
+    ],
+    icon: <Trash2 size={48} />
   }
 };
 

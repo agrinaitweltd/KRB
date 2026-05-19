@@ -12,7 +12,8 @@ import {
   CheckCircle2,
   ThumbsUp,
   Wrench,
-  ShieldCheck
+  ShieldCheck,
+  Trash2
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ImageShowcase from '../components/ImageShowcase';
@@ -77,6 +78,14 @@ const Services = () => {
       icon: ShieldCheck,
       image: '/security.jpg',
       color: 'bg-slate-50 text-slate-600'
+    },
+    {
+      id: 'garage-clean-ups',
+      title: 'Garage Clean-Ups',
+      description: 'Full garage clearing and cleaning service — we remove unwanted items, sweep out years of clutter, and leave your garage fresh, organised, and ready to use.',
+      icon: Trash2,
+      image: '/garage-cleanup-main.png',
+      color: 'bg-orange-50 text-orange-600'
     }
   ];
 

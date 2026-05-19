@@ -117,6 +117,7 @@ const Header: React.FC = () => {
         { name: 'General Handyman Services', path: '/services/handyman' },
         { name: 'Property Maintenance', path: '/services/maintenance' },
         { name: 'Security Services', path: '/services/security-services' },
+        { name: 'Garage Clean-Ups', path: '/services/garage-clean-ups' },
         {
           name: 'Cleaning',
           children: [

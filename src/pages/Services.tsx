@@ -82,7 +82,7 @@ const Services = () => {
     {
       id: 'garage-clean-ups',
       title: 'Garage Clean-Ups',
-      description: 'Full garage clearing and cleaning service — we remove unwanted items, sweep out years of clutter, and leave your garage fresh, organised, and ready to use.',
+      description: 'Full garage clearing and cleaning service — we remove unwanted items, sweep out years of clutter, and even buy out items you no longer need, leaving your garage fresh, organised, and ready to use.',
       icon: Trash2,
       image: '/garage-cleanup-main.png',
       color: 'bg-orange-50 text-orange-600'

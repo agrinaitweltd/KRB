@@ -267,20 +267,20 @@ const serviceData: Record<string, any> = {
   'garage-clean-ups': {
     title: 'Garage Clean-Ups',
     heroImage: '/garage-cleanup-main.png',
-    description: 'Full garage clearing and cleaning service — we remove unwanted items, dispose of waste responsibly, and leave your garage swept clean and ready to use again.',
+    description: 'Full garage clearing and cleaning service — we remove unwanted items, dispose of waste responsibly, and even buy out items you no longer need. Leave the hard work to us and get your garage back.',
     benefits: [
       'Reclaim your garage space quickly',
-      'Responsible disposal and recycling of items',
+      'We buy out items you no longer want',
+      'Responsible disposal and recycling of remaining waste',
       'Thorough sweep-down and clean after clearance',
-      'No heavy lifting required from you',
-      'Same-day or next-day availability'
+      'No heavy lifting required from you'
     ],
     types: [
       'Full Garage Clearance',
-      'Partial Junk & Rubbish Removal',
+      'Item Buy-Out & Valuation',
       'Old Appliance & Furniture Removal',
-      'Post-Clearance Sweep & Clean',
-      'Recycling & Responsible Disposal'
+      'Partial Junk & Rubbish Removal',
+      'Post-Clearance Sweep & Clean'
     ],
     icon: <Trash2 size={48} />
   }
